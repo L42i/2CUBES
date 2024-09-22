@@ -3,7 +3,18 @@
     $ adb devices
 
 
+
+
+
+
+
 ### Create Virtual Video Device
+
+
+    $ sudo apt-get -y install v4l2loopback-dkms
+
+
+    $ sudo modprobe v4l2loopback devices=2 video_nr=10,11 card_label='Quest1','Quest2'
 
 
 
