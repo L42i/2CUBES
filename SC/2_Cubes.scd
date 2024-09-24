@@ -8,6 +8,9 @@
 // this determines how many sources (and inputs) we have
 ~n_inputs       = 32;
 
+// related to Quest objects
+~n_objects      = 4;
+
 // the HOA order determines the size of the HOA bus and the nr of outputs
 ~hoa_order      = 5;
 ~n_hoa_channels = (pow(~hoa_order + 1.0 ,2.0)).asInteger;
@@ -27,6 +30,77 @@ s.options.numBuffers           = 4096;
 ////////////////////////////////////////////////////////////////////////////////////////
 
 s.waitForBoot({
+
+	////////////////////////////////////////////////////////////////////////////////////////
+	// the control rate buses for the input from the Meta Quest
+	////////////////////////////////////////////////////////////////////////////////////////
+
+	~aed_BUS = [];
+	~xyz_BUS = [];
+
+	for (0, ~n_objects -1, {arg i;
+		~aed_BUS = ~aed_BUS.add(Bus.control(s,3));
+		~xyz_BUS = ~xyz_BUS.add(Bus.control(s,3));
+	});
+
+	s.sync;
+
+
+
+	OSCdef('/src/aed',
+		{
+
+			arg msg, time, addr, recvPort;
+			var idx = msg[1]-1;
+
+			~aed_BUS[idx].setAt(0, abs(msg[2])/ (pi/2));
+			~aed_BUS[idx].setAt(1, abs(msg[3])/ (pi/2));
+			~aed_BUS[idx].setAt(2, abs(msg[4]));
+
+			// pass message on
+			~litespat_OSC.sendMsg(msg[0],msg[1],msg[2],msg[3],msg[4]);
+
+			//msg.postln;
+
+	},'/src/aed');
+
+
+
+
+
+	////////////////////////////////////////////////////////////////////////////////////////
+	// One OSC listener for data from the Quest 3
+	////////////////////////////////////////////////////////////////////////////////////////
+
+	OSCdef('/quest/1/xyz',
+		{
+
+			arg msg, time, addr, recvPort;
+			var a,e,d;
+			var x,y,z;
+
+			//a = msg[4] / 180 * 3.1415;
+			//e = msg[5] / 180 * 3.1415;
+			//d = msg[6];
+
+			var c;
+
+
+				x = msg[4];
+				y = msg[5];
+				z = msg[6];
+
+				c	= Cartesian(x,y,z);
+
+/*				~hoa_panners[0].set(\azim, c.theta());
+				~hoa_panners[0].set(\elev, c.phi());
+				~hoa_panners[0].set(\dist, c.rho());*/
+
+				// msg.postln;
+
+
+	},'/quest/1/xyz');
+
 
 
 	////////////////////////////////////////////////////////////////////////////////////
@@ -106,76 +180,6 @@ s.waitForBoot({
 
 
 
-	////////////////////////////////////////////////////////////////////////////////////////
-	// One OSC listener for data from the Quest 3
-	////////////////////////////////////////////////////////////////////////////////////////
-
-	OSCdef('/hand',
-		{
-
-			arg msg, time, addr, recvPort;
-			var a,e,d;
-			var x,y,z;
-
-			//a = msg[4] / 180 * 3.1415;
-			//e = msg[5] / 180 * 3.1415;
-			//d = msg[6];
-
-
-			var c;
-
-			if(msg[2]=='src1:',{
-
-				x = msg[4];
-				y = msg[5];
-				z = msg[6];
-
-				c	= Cartesian(x,y,z);
-
-				~hoa_panners[0].set(\azim, c.theta());
-				~hoa_panners[0].set(\elev, c.phi());
-				~hoa_panners[0].set(\dist, c.rho());
-
-				msg.postln;
-
-			},{});
-
-
-	},'/src/xyz');
-
-	////////////////////////////////////////////////////////////////////////////////////////
-	// One OSC listener function for each spatial paramter
-	////////////////////////////////////////////////////////////////////////////////////////
-
-	OSCdef('/source/azim',
-		{
-			arg msg, time, addr, recvPort;
-			var azim = msg[2];
-
-			~hoa_panners[msg[1]].set(\azim, azim);
-			postln("Azimuth: "+azim)
-
-	},'/source/azim');
-
-	OSCdef('/source/elev',
-		{
-			arg msg, time, addr, recvPort;
-			var elev = msg[2];
-
-			~hoa_panners[msg[1]].set(\elev,elev);
-			postln("Elevation: "+elev)
-
-	}, '/source/elev');
-
-	OSCdef('/source/dist',
-		{
-			arg msg, time, addr, recvPort;
-			var dist = msg[2];
-
-			~hoa_panners[msg[1]].set(\dist,dist);
-			postln("Distance: "+dist)
-
-	}, '/source/dist');
 
 
 	// open our extra ports for OSC and give feedback
