@@ -53,4 +53,4 @@ var updateIndicator = fork{loop{
 
 
 
-v.value(1)
+v.value(0)

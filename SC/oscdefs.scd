@@ -73,7 +73,7 @@ OSCdef('/quest/2/aed',
 		// pass message on
 		//~litespat_OSC.sendMsg(msg[0],msg[1],msg[2],msg[3],msg[4]);
 
-		msg.postln;
+		//msg.postln;
 
 },'/quest/2/aed');
 

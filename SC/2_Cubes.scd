@@ -74,15 +74,16 @@ s.waitForBoot({
 	s.sync;
 
 	~bass_high_BUS = Bus.audio(s,4);
+	~bass_low_BUS = Bus.audio(s,4);
 	s.sync;
 
 	~bass_high = {
 		|
-		in        = 0,
-		outbus       = 0
+		in        = 4,
+		outbus    = 0
 		|
 
-		var	quest_idx  = 0;
+		var	quest_idx  = 4;
 		// input and feedback signals
 		var input    = SoundIn.ar(in);
 		var feedback = LocalIn.ar(4);
@@ -95,17 +96,17 @@ s.waitForBoot({
 
 		LocalOut.ar(out*gain);
 
-		Out.ar(outbus,out);
+		Out.ar(~bass_high_BUS,out);
 	}.play;
 
 
 		~bass_low = {
 		|
-		in        = 1,
+		in        = 5,
 		outbus    = 0
 		|
 
-		var	quest_idx = 1;
+		var	quest_idx = 5;
 		// input and feedback signals
 		var input     = SoundIn.ar(in);
 
@@ -114,16 +115,15 @@ s.waitForBoot({
 
 
 		var proc = input * SinOsc.ar(pitch+(pitch*deviate));
-		// feedback-delay parameters:
-		//var times = max(0.001,     [1,1.25,1.5,1.85] * abs(In.kr(~xyz_BUS[quest_idx].index)));
-		//var gain = max(0, min(1.01, abs(In.kr(~xyz_BUS[quest_idx].index+2))));
 
 		var out  = DelayC.ar(proc, 1);
 
 		// LocalOut.ar(out*gain);
 
-		Out.ar(outbus,out);
+		Out.ar(~bass_low_BUS,out);
 	}.play;
+
+	s.sync;
 
 
 	////////////////////////////////////////////////////////////////////////////////////////
@@ -156,7 +156,7 @@ s.waitForBoot({
 			var elev = In.kr(elevBus);
 			var dist = In.kr(distBus);
 
-			var sound = gain * SoundIn.ar(in_bus);
+			var sound = gain * In.ar(in_bus);
 
 			var saturate = 2.0;
 			var level =  (saturate/(dist+saturate));
@@ -171,7 +171,7 @@ s.waitForBoot({
 	////////////////////////////////////////////////////////////////////////////////////////
 	// create encoders
 
-	for (0, 7, {arg i;
+/*	for (0, 7, {arg i;
 
 		post('Adding HOA encoder module: ');
 		i.postln;
@@ -188,7 +188,52 @@ s.waitForBoot({
 				],
 				target: ~spatial_GROUP
 		);)
+	});*/
+
+	for (0, 3, {arg i;
+
+		post('Adding bass high encoder module: ');
+		i.postln;
+
+		// this is the array of encoders
+		~hoa_panners = ~hoa_panners.add(
+			Synth(\hoa_mono_encoder,
+				[
+					\in_bus,  ~bass_high_BUS.index+i,
+					\out_bus, ~ambi_BUS.index,
+					\azimBus, ~aed_BUS[i+4].index+0,
+					\elevBus, ~aed_BUS[i+4].index+1,
+					\distBus, ~aed_BUS[i+4].index+2,
+				],
+				target: ~spatial_GROUP
+		);)
 	});
+
+
+
+	for (0, 3, {arg i;
+
+		var source_offset = 4;
+
+		post('Adding bass low encoder module: ');
+		source_offset.postln;
+
+
+
+		// this is the array of encoders
+		~hoa_panners = ~hoa_panners.add(
+			Synth(\hoa_mono_encoder,
+				[
+					\in_bus,  ~bass_low_BUS.index+i,
+					\out_bus, ~ambi_BUS.index,
+					\azimBus, ~aed_BUS[i+source_offset].index+0,
+					\elevBus, ~aed_BUS[i+source_offset].index+1,
+					\distBus, ~aed_BUS[i+source_offset].index+2
+				],
+				target: ~spatial_GROUP
+		);)
+	});
+
 	s.sync;
 
 	////////////////////////////////////////////////////////////////////////////////////////
@@ -206,7 +251,7 @@ s.waitForBoot({
 	s.sync;
 	// goes into the output group
 	~hoa_output.moveToTail(~output_GROUP);
-	~hoa_output.set(\gain,0.0);
+	~hoa_output.set(\gain,0.75);
 
 
 
