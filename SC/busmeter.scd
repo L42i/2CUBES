@@ -1,9 +1,11 @@
 // Run this to monitor
 
-(
+v = {
 
 // set index of bus to monitor
-var srcIdx = 0;
+
+|srcIdx = 0|
+
 
 var win = Window("Bus Monitor for Object:"+srcIdx.asString,Rect(100,100,600,400)).front;
 
@@ -25,19 +27,16 @@ var t6 = StaticText(win, Rect(180, 100, 30, 30)).align_(\center).string_("D");
 
 
 var updateIndicator = fork{loop{
+
 	~xyz_BUS[srcIdx].getn(3,{
 		arg value;
 		{
-			s1.valueAction = value[0];
-			s2.valueAction = value[1];
-			s3.valueAction = value[2];
+			s1.valueAction = value[0]+0.5;
+			s2.valueAction = value[1]+0.5;
+			s3.valueAction = value[2]+0.5;
 		}.defer();
-	});
-	0.05.wait;
-}};
 
-var updateIndicator2 = fork{loop{
-	~aed_BUS[srcIdx].getn(3,{
+		~aed_BUS[srcIdx].getn(3,{
 		arg value;
 		{
 			s4.valueAction = value[0];
@@ -45,7 +44,13 @@ var updateIndicator2 = fork{loop{
 			s6.valueAction = value[2];
 		}.defer();
 	});
+	});
 	0.05.wait;
 }};
 
-)
+
+};
+
+
+
+v.value(4)
