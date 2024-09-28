@@ -1,7 +1,7 @@
 tmux new-session -d -s 2CUBES
 
 
-tmux send-keys -t 2CUBES 'jackd -a a -d alsa -d hw:KTUSB -p -r 48000 -p 512 -n 2' C-m
+tmux send-keys -t 2CUBES 'jackd -a a -d alsa -d hw:KTUSB -p -r 48000 -p 256 -n 2' C-m
 
 
 sleep 3

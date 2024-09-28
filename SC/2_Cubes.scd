@@ -79,7 +79,7 @@ s.waitForBoot({
 
 	~bass_high = {
 		|
-		in        = 4,
+		in        = 1,
 		outbus    = 0
 		|
 
@@ -102,7 +102,7 @@ s.waitForBoot({
 
 		~bass_low = {
 		|
-		in        = 5,
+		in        = 0,
 		outbus    = 0
 		|
 
