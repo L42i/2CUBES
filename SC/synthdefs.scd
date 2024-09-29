@@ -35,7 +35,7 @@ SynthDef(\quad_freezer, {
 
 	// input signal
 	var input     = SoundIn.ar(inbus);
-	var	outgain   = Clip.kr(1*(In.kr(gainbus)+1),0,2);
+	var	outgain   = Clip.kr(1*(In.kr(gainbus)+1),0,1);
 
 	// do an FFT to all the signals
 	var fft = FFT(LocalBuf(2048.dup(4), 1), input);
