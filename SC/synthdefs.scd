@@ -26,6 +26,24 @@ SynthDef(\quad_filter, {
 
 }).add;
 
+SynthDef(\quad_freezer, {
+	|
+	inbus,
+	outbus,
+	gainbus
+	|
+
+	// input signal
+	var input     = SoundIn.ar(inbus);
+	var	outgain   = Clip.kr(1*(In.kr(gainbus)+1),0,2);
+
+	// do an FFT to all the signals
+	var fft = FFT(LocalBuf(2048.dup(4), 1), input);
+	var chain = PV_Freeze(fft, outgain > 0.7);
+
+	Out.ar(outbus,0.5*IFFT(chain));
+
+}).add;
 
 SynthDef(\quad_pdf, {
 	|
