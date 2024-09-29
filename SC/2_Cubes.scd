@@ -120,17 +120,18 @@ s.waitForBoot({
 
 	~dark_energy = {
 
-		var in = SoundIn.ar(0);
+		var in = SoundIn.ar(2);
 
-		Out.ar(~ambi_BUS, in*Array.fill(~n_hoa_channels,1));
+		Out.ar(~ambi_BUS, in);//*Array.fill(~n_hoa_channels,1));
 	}.play;
 
-	////////////////////////////////////////////////////////////////////////////////////////
+		////////////////////////////////////////////////////////////////////////////////////////
 
 	~bass_low_synth = Synth(\quad_shift,[
 		// pdf buses
-		\inbus, 4,
+		\inbus, 0,
 		\outbus, ~input_BUS.index+16,
+		\gainbus, ~quest_xyz_BUS[4].index+1,
 		\pitchbus, ~quest_xyz_BUS[4].index+1,
 		\delaybus, ~quest_xyz_BUS[4].index,
 		\feedbackbus, ~quest_xyz_BUS[4].index+2],
@@ -149,8 +150,9 @@ s.waitForBoot({
 
 	~bass_high_synth = Synth(\quad_pdf,[
 		// pdf buses
-		\inbus, 5,
+		\inbus, 1,
 		\outbus, ~input_BUS.index+20,
+		\gainbus, ~quest_xyz_BUS[5].index+1,
 		\pitchbus, ~quest_xyz_BUS[5].index+1,
 		\delaybus, ~quest_xyz_BUS[5].index,
 		\feedbackbus, ~quest_xyz_BUS[5].index+2],
@@ -162,6 +164,24 @@ s.waitForBoot({
 		\outbus_2, ~aed_BUS[21],
 		\outbus_3, ~aed_BUS[22],
 		\outbus_4, ~aed_BUS[23]]);
+
+	s.sync;
+
+	////////////////////////////////////////////////////////////////////////////////////////
+
+	~bass_filter_synth = Synth(\quad_filter,[
+		// pdf buses
+		\inbus, 1,
+		\outbus,      ~input_BUS.index+24,
+		\gainbus,     ~quest_xyz_BUS[6].index+1],
+	~effects_GROUP);
+
+	~bass_filter_splitter = Synth(\aed_splitter,[
+		\inbus,    ~quest_aed_BUS[6],
+		\outbus_1, ~aed_BUS[24],
+		\outbus_2, ~aed_BUS[25],
+		\outbus_3, ~aed_BUS[26],
+		\outbus_4, ~aed_BUS[27]]);
 
 	s.sync;
 

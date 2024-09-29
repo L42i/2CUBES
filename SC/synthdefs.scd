@@ -1,14 +1,44 @@
 
+SynthDef(\quad_filter, {
+	|
+	inbus,
+	outbus,
+	gainbus
+	|
+
+	// input signal
+	var input     = SoundIn.ar(inbus);
+	var	outgain   = Clip.kr(1*(In.kr(gainbus)+1),0,2);
+
+	// filter all the signals
+	var filter1   = LPF.ar(input, 200.0,outgain);
+	var filter3   = BPF.ar(input, 650.0,  1.38,outgain);
+	var filter4   = BPF.ar(input, 1550.0, 0.5,outgain);
+	var filter2   = HPF.ar(input, 2000.0,outgain);
+
+	// do some wavefolding
+	var folder1   = Fold.ar(filter1, lo: -5.0, hi: 0.5);
+	var folder2   = Fold.ar(filter2, lo: -5.0, hi: 0.5);
+	var folder3   = Fold.ar(filter3, lo: -5.0, hi: 0.5);
+	var folder4   = Fold.ar(filter4, lo: -5.0, hi: 0.5);
+
+	Out.ar(outbus,0.5*[folder1, folder2, folder3, folder4]);
+
+}).add;
+
+
 SynthDef(\quad_pdf, {
 	|
 	inbus,
 	outbus,
+	gainbus,
 	pitchbus,
 	delaybus,
 	feedbackbus
 	|
 
-	var	quest_idx  = 0;
+	var	outgain  = Clip.kr(0.5*(In.kr(gainbus)+1),0,2);
+
 	// input and feedback signals
 	var input    = SoundIn.ar(inbus);
 	var feedback = LocalIn.ar(4);
@@ -20,7 +50,7 @@ SynthDef(\quad_pdf, {
 	var out  = DelayC.ar(input + proc, 1, times);
 
 	LocalOut.ar(out*gain);
-	Out.ar(outbus,out);
+	Out.ar(outbus,outgain*out);
 }).add;
 
 
@@ -30,19 +60,21 @@ SynthDef(\quad_shift, {
 	|
 	inbus,
 	outbus,
+	gainbus,
 	pitchbus,
 	devbus
 	|
 
-	var	quest_idx = 5;
+	var	outgain  = Clip.kr(0.5*(In.kr(gainbus)+1),0,2);
+
 	// input and feedback signals
 	var input     = SoundIn.ar(inbus);
 
 	var pitch     = 500*(In.kr(pitchbus)+1);
 	var deviate   = [-0.5,-0.25,0.25,0.5]*abs(In.kr(devbus));
 	var proc      = input * SinOsc.ar(pitch+(pitch*deviate));
+	Out.ar(outbus,outgain*proc);
 
-	Out.ar(outbus,proc);
 }).add;
 
 
@@ -111,3 +143,4 @@ SynthDef(\aed_splitter,
 		Out.kr(outbus_4, dist);
 
 }).add;
+
