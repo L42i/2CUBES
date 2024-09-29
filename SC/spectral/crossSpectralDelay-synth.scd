@@ -4,7 +4,7 @@
 SynthDef(\crossSpectralDelay, { |bufnum, out=0, amp=1, maxDelay=1.0, delayAmount=0.5, delayTimeL=0.1, delayTimeR=0.1, bypass=0|
     var signal, chainL, chainR, delayedL, delayedR;
 
-    signal = PlayBuf.ar(2, bufnum, loop: 1) * amp;
+	signal = SoundIn.ar([0,1]);//PlayBuf.ar(2, bufnum, loop: 1) * amp;
 
     chainL = FFT(LocalBuf(1024), signal[0]);
     chainR = FFT(LocalBuf(1024), signal[1]);
@@ -28,7 +28,7 @@ SynthDef(\crossSpectralDelay, { |bufnum, out=0, amp=1, maxDelay=1.0, delayAmount
 
 (
 x = Synth(\crossSpectralDelay, [
-    \bufnum, ~buffer.bufnum,
+    //\bufnum, ~buffer.bufnum,
     \out, 0,
     \amp, 1.0,
     \maxDelay, 1.0,           // sec

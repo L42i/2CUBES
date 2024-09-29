@@ -4,9 +4,9 @@ OSCdef('/quest/1/aed',
 		arg msg, time, addr, recvPort;
 		var idx = msg[1]-1;
 
-		~aed_BUS[idx].setAt(0, abs(msg[2])/ (pi/2));
-		~aed_BUS[idx].setAt(1, abs(msg[3])/ (pi/2));
-		~aed_BUS[idx].setAt(2, abs(msg[4]));
+		~quest_aed_BUS[idx].setAt(0, abs(msg[2])/ (pi/2));
+		~quest_aed_BUS[idx].setAt(1, abs(msg[3])/ (pi/2));
+		~quest_aed_BUS[idx].setAt(2, abs(msg[4]));
 
 		// pass message on
 		//~litespat_OSC.sendMsg(msg[0],msg[1],msg[2],msg[3],msg[4]);
@@ -30,9 +30,9 @@ OSCdef('/quest/1/xyz',
 
 		var idx = msg[1]-1;
 
-		~xyz_BUS[idx].setAt(0, msg[2]);
-		~xyz_BUS[idx].setAt(1, msg[3]);
-		~xyz_BUS[idx].setAt(2, msg[4]);
+		~quest_xyz_BUS[idx].setAt(0, msg[2]);
+		~quest_xyz_BUS[idx].setAt(1, msg[3]);
+		~quest_xyz_BUS[idx].setAt(2, msg[4]);
 
 		/*var c;
 
@@ -66,9 +66,9 @@ OSCdef('/quest/2/aed',
 		arg msg, time, addr, recvPort;
 		var idx = msg[1]-1+4;
 
-		~aed_BUS[idx].setAt(0, abs(msg[2])/ (pi/2));
-		~aed_BUS[idx].setAt(1, abs(msg[3])/ (pi/2));
-		~aed_BUS[idx].setAt(2, abs(msg[4]));
+		~quest_aed_BUS[idx].setAt(0, abs(msg[2])/ (pi/2));
+		~quest_aed_BUS[idx].setAt(1, abs(msg[3])/ (pi/2));
+		~quest_aed_BUS[idx].setAt(2, abs(msg[4]));
 
 		// pass message on
 		//~litespat_OSC.sendMsg(msg[0],msg[1],msg[2],msg[3],msg[4]);
@@ -92,9 +92,9 @@ OSCdef('/quest/2/xyz',
 
 		var idx = msg[1]-1+4;
 
-		~xyz_BUS[idx].setAt(0, msg[2]);
-		~xyz_BUS[idx].setAt(1, msg[3]);
-		~xyz_BUS[idx].setAt(2, msg[4]);
+		~quest_xyz_BUS[idx].setAt(0, msg[2]);
+		~quest_xyz_BUS[idx].setAt(1, msg[3]);
+		~quest_xyz_BUS[idx].setAt(2, msg[4]);
 
 		/*var c;
 

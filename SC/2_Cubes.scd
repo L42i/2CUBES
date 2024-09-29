@@ -8,7 +8,7 @@
 // this determines how many sources (and inputs) we have
 ~n_inputs       = 8;
 
-// related to Quest objects
+// related to Quest objects`
 ~n_objects      = 8;
 
 // related to Quest objects

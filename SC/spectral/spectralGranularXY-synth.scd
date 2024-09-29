@@ -1,15 +1,21 @@
 (
-SynthDef(\spectralGranularXY, { |bufnum, out=0, amp=1, grainDensity=10, grainDur=0.1, maxDelay=1.0, pitchShift=1, pitchLfoRate=0.1, fftSize=1024, hopSize=0.5, effectAmount=0.5, bypass=0, mouseControl=0|
-    var signal, chain, lowFreq, highFreq, delayed, granulated, grainPos, pitchMod, finalSignal, xPos, yPos;
+SynthDef(\spectralGranularXY, {
+	|
+	bufnum,
+	out=0,
+	amp=1,
+	grainDensity=10, grainDur=0.1, maxDelay=1.0, pitchShift=1, pitchLfoRate=0.1, fftSize=1024, hopSize=0.5, effectAmount=0.5, bypass=0, mouseControl=0|
 
-    xPos = MouseX.kr(0.5, 2.0, 1);
+	var signal, chain, lowFreq, highFreq, delayed, granulated, grainPos, pitchMod, finalSignal, xPos, yPos;
+
+	xPos = MouseX.kr(0.5, 2.0, 1);
     yPos = MouseY.kr(0.1, 1.0, 1);
 
     amp = Select.kr(mouseControl, [amp, xPos]);
     grainDensity = Select.kr(mouseControl, [grainDensity, yPos * 20]);
     pitchShift = Select.kr(mouseControl, [pitchShift, xPos]);
 
-    signal = PlayBuf.ar(2, bufnum, loop: 1) * amp;
+	signal = SoundIn.ar(0);// PlayBuf.ar(2, bufnum, loop: 1) * amp;
 
     chain = FFT(LocalBuf(fftSize), signal);
 
@@ -36,7 +42,7 @@ SynthDef(\spectralGranularXY, { |bufnum, out=0, amp=1, grainDensity=10, grainDur
 
 (
 x = Synth(\spectralGranularXY, [
-    \bufnum, ~buffer.bufnum,
+    //\bufnum, ~buffer.bufnum,
     \out, 0,
     \amp, 1.0,
     \grainDensity, 10,
