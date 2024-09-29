@@ -12,7 +12,7 @@
 ~n_objects      = 8;
 
 // related to Quest objects
-~n_sources      = 16;
+~n_sources      = 32;
 
 // the HOA order determines the size of the HOA bus and the nr of outputs
 ~hoa_order      = 5;
@@ -27,7 +27,6 @@ s.options.numInputBusChannels  = ~n_inputs;
 s.options.numOutputBusChannels = ~n_hoa_channels;
 s.options.memSize              = 65536;
 s.options.numBuffers           = 4096;
-
 
 ////////////////////////////////////////////////////////////////////////////////////////
 // MIDI
@@ -46,132 +45,54 @@ MIDIClient.init(3,3);
 
 s.waitForBoot({
 
+
+	load(thisProcess.nowExecutingPath.dirname++"/synthdefs.scd");
+	s.sync;
+
 	////////////////////////////////////////////////////////////////////////////////////////
+	// GROUPS
+	////////////////////////////////////////////////////////////////////////////////////////
+
+	~input_GROUP = Group.head(s);
+	s.sync;
+	~effects_GROUP = Group.after(~input_GROUP);
+	s.sync;
+	// The group for the spatial encoders
+	~spatial_GROUP = Group.after(~effects_GROUP);
+	s.sync;
+	~output_GROUP	 = Group.after(~spatial_GROUP);
+
+	////////////////////////////////////////////////////////////////////////////////////////
+	// Audio buses
+	////////////////////////////////////////////////////////////////////////////////////////
+
+	// a multichannel audio bus for the encoded Ambisonics signal
+	~ambi_BUS = Bus.audio(s, ~n_hoa_channels);
+
+	// these are used for the input signals AFTER effects
+	~input_BUS = Bus.audio(s, ~n_sources);
+
+	////////////////////////////////////////////////////////////////////////////////////////
+	// Control buses
+	////////////////////////////////////////////////////////////////////////////////////////
+
 	// the control rate buses for the input from the Meta Quest
-	////////////////////////////////////////////////////////////////////////////////////////
-
-	~aed_BUS = [];
-	~xyz_BUS = [];
-
 	for (0, ~n_objects -1, {arg i;
+		~quest_aed_BUS = ~quest_aed_BUS.add(Bus.control(s,3));
+		~quest_xyz_BUS = ~quest_xyz_BUS.add(Bus.control(s,3));
+	});
+
+	// the aed_BUSes are mapped to the positions of the Ambi sources
+	for (0, ~n_sources -1, {arg i;
 		~aed_BUS = ~aed_BUS.add(Bus.control(s,3));
-		~xyz_BUS = ~xyz_BUS.add(Bus.control(s,3));
 	});
 
 	s.sync;
 
-
-
-	////////////////////////////////////////////////////////////////////////////////////////
-
-
-	~input_GROUP = Group.head(s);
-	s.sync;
-
-	////////////////////////////////////////////////////////////////////////////////////////
-
-	~effects_GROUP = Group.after(~input_GROUP);
-	s.sync;
-
-	~bass_high_BUS = Bus.audio(s,4);
-	~bass_low_BUS = Bus.audio(s,4);
-	s.sync;
-
-	~bass_high = {
-		|
-		in        = 1,
-		outbus    = 0
-		|
-
-		var	quest_idx  = 4;
-		// input and feedback signals
-		var input    = SoundIn.ar(in);
-		var feedback = LocalIn.ar(4);
-
-		var proc = PitchShift.ar(feedback,0.2, In.kr(~xyz_BUS[quest_idx].index+1)+1);
-		// feedback-delay parameters:
-		var times = max(0.001,     [1,1.25,1.5,1.85] * abs(In.kr(~xyz_BUS[quest_idx].index)));
-		var gain = max(0, min(1.01, abs(In.kr(~xyz_BUS[quest_idx].index+2))));
-		var out  = DelayC.ar(input + proc, 1, times);
-
-		LocalOut.ar(out*gain);
-
-		Out.ar(~bass_high_BUS,out);
-	}.play;
-
-
-		~bass_low = {
-		|
-		in        = 0,
-		outbus    = 0
-		|
-
-		var	quest_idx = 5;
-		// input and feedback signals
-		var input     = SoundIn.ar(in);
-
-		var pitch     = 500*(In.kr(~xyz_BUS[quest_idx].index+1)+1);
-		var deviate   = [-0.5,-0.25,0.25,0.5]*abs(In.kr(~xyz_BUS[quest_idx].index+0));
-
-
-		var proc = input * SinOsc.ar(pitch+(pitch*deviate));
-
-		var out  = DelayC.ar(proc, 1);
-
-		// LocalOut.ar(out*gain);
-
-		Out.ar(~bass_low_BUS,out);
-	}.play;
-
-	s.sync;
-
-
-	////////////////////////////////////////////////////////////////////////////////////////
-	// The group for the spatial encoders
-	~spatial_GROUP = Group.after(~effects_GROUP);
-	s.sync;
-
-	////////////////////////////////////////////////////////////////////////////////////////
-	// a multichannel audio bus for the encoded Ambisonics signal
-	~ambi_BUS = Bus.audio(s, ~n_hoa_channels);
-
-
-
-
-	////////////////////////////////////////////////////////////////////////////////////
-	// This is the SynthDef for the encoders
-
-	SynthDef(\hoa_mono_encoder,
-		{
-			|
-			in_bus  = nil,
-			out_bus = 0,
-			azimBus = 0,
-			elevBus = 0,
-			distBus = 0.1,
-			gain    = 1
-			|
-
-			var azim = In.kr(azimBus);
-			var elev = In.kr(elevBus);
-			var dist = In.kr(distBus);
-
-			var sound = gain * In.ar(in_bus);
-
-			var saturate = 2.0;
-			var level =  (saturate/(dist+saturate));
-			var bform = HOASphericalHarmonics.coefN3D(~hoa_order, azim, elev) * sound * level;
-
-			Out.ar(out_bus, bform);
-
-	}).add;
-	s.sync;
-
-
 	////////////////////////////////////////////////////////////////////////////////////////
 	// create encoders
-
-/*	for (0, 7, {arg i;
+	////////////////////////////////////////////////////////////////////////////////////////
+	for (0, ~n_sources-1, {arg i;
 
 		post('Adding HOA encoder module: ');
 		i.postln;
@@ -180,7 +101,7 @@ s.waitForBoot({
 		~hoa_panners = ~hoa_panners.add(
 			Synth(\hoa_mono_encoder,
 				[
-					\in_bus,  i,
+					\in_bus,  ~input_BUS.index+i,
 					\out_bus, ~ambi_BUS.index,
 					\azimBus, ~aed_BUS[i].index+0,
 					\elevBus, ~aed_BUS[i].index+1,
@@ -188,64 +109,65 @@ s.waitForBoot({
 				],
 				target: ~spatial_GROUP
 		);)
-	});*/
-
-	for (0, 3, {arg i;
-
-		post('Adding bass high encoder module: ');
-		i.postln;
-
-		// this is the array of encoders
-		~hoa_panners = ~hoa_panners.add(
-			Synth(\hoa_mono_encoder,
-				[
-					\in_bus,  ~bass_high_BUS.index+i,
-					\out_bus, ~ambi_BUS.index,
-					\azimBus, ~aed_BUS[i+4].index+0,
-					\elevBus, ~aed_BUS[i+4].index+1,
-					\distBus, ~aed_BUS[i+4].index+2,
-				],
-				target: ~spatial_GROUP
-		);)
 	});
 
+	////////////////////////////////////////////////////////////////////////////////////////
+	//
+	////////////////////////////////////////////////////////////////////////////////////////
 
+	////////////////////////////////////////////////////////////////////////////////////////
+	// dark energy simply goes to all Ambi buses
 
-	for (0, 3, {arg i;
+	~dark_energy = {
 
-		var source_offset = 4;
+		var in = SoundIn.ar(0);
 
-		post('Adding bass low encoder module: ');
-		source_offset.postln;
+		Out.ar(~ambi_BUS, in*Array.fill(~n_hoa_channels,1));
+	}.play;
 
+	////////////////////////////////////////////////////////////////////////////////////////
 
+	~bass_low_synth = Synth(\quad_shift,[
+		// pdf buses
+		\inbus, 4,
+		\outbus, ~input_BUS.index+16,
+		\pitchbus, ~quest_xyz_BUS[4].index+1,
+		\delaybus, ~quest_xyz_BUS[4].index,
+		\feedbackbus, ~quest_xyz_BUS[4].index+2],
+	~effects_GROUP);
 
-		// this is the array of encoders
-		~hoa_panners = ~hoa_panners.add(
-			Synth(\hoa_mono_encoder,
-				[
-					\in_bus,  ~bass_low_BUS.index+i,
-					\out_bus, ~ambi_BUS.index,
-					\azimBus, ~aed_BUS[i+source_offset].index+0,
-					\elevBus, ~aed_BUS[i+source_offset].index+1,
-					\distBus, ~aed_BUS[i+source_offset].index+2
-				],
-				target: ~spatial_GROUP
-		);)
-	});
+	~bass_low_splitter = Synth(\aed_splitter,[
+		\inbus,    ~quest_aed_BUS[4],
+		\outbus_1, ~aed_BUS[16],
+		\outbus_2, ~aed_BUS[17],
+		\outbus_3, ~aed_BUS[18],
+		\outbus_4, ~aed_BUS[19]]);
 
 	s.sync;
 
 	////////////////////////////////////////////////////////////////////////////////////////
-	// Another group for the outputs
-	////////////////////////////////////////////////////////////////////////////////////////
 
-	~output_GROUP	 = Group.after(~spatial_GROUP);
+	~bass_high_synth = Synth(\quad_pdf,[
+		// pdf buses
+		\inbus, 5,
+		\outbus, ~input_BUS.index+20,
+		\pitchbus, ~quest_xyz_BUS[5].index+1,
+		\delaybus, ~quest_xyz_BUS[5].index,
+		\feedbackbus, ~quest_xyz_BUS[5].index+2],
+	~effects_GROUP);
+
+	~bass_high_splitter = Synth(\aed_splitter,[
+		\inbus,    ~quest_aed_BUS[5],
+		\outbus_1, ~aed_BUS[20],
+		\outbus_2, ~aed_BUS[21],
+		\outbus_3, ~aed_BUS[22],
+		\outbus_4, ~aed_BUS[23]]);
+
 	s.sync;
 
 	////////////////////////////////////////////////////////////////////////////////////////
 	// The output node
-	////////////////////////////////////////////////////////////////////////////////////////
+	////////////////////////////////////////////////////////////////////////////////////////hoa_output
 
 	~hoa_output = {|gain=1| Out.ar(0 ,gain * In.ar(~ambi_BUS.index,~n_hoa_channels))}.play;
 	s.sync;
@@ -253,14 +175,11 @@ s.waitForBoot({
 	~hoa_output.moveToTail(~output_GROUP);
 	~hoa_output.set(\gain,0.75);
 
-
-
 	////////////////////////////////////////////////////////////////////////////////////////
 	// OSC
 	////////////////////////////////////////////////////////////////////////////////////////
 
 	load(thisProcess.nowExecutingPath.dirname++"/oscdefs.scd");
-
 
 	// open our extra ports for OSC and give feedback
 	thisProcess.openUDPPort(~osc_IN);

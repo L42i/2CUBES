@@ -1,7 +1,7 @@
 
 	~midi_sender_N1 = Routine {
 		loop {
-			var cart = ~xyz_BUS[0].getnSynchronous(3);
+			var cart = ~quest_xyz_BUS[0].getnSynchronous(3);
 			var x = abs(cart[0])*127;
 			var y = (cart[1]+1)*127;
 			var z = abs(cart[2])*127;
@@ -14,7 +14,7 @@
 
 	~midi_sender_N2 = Routine {
 		loop {
-			var cart = ~xyz_BUS[0].getnSynchronous(3);
+			var cart = ~quest_xyz_BUS[0].getnSynchronous(3);
 			var x = abs(cart[0])*127;
 			var y = (cart[1]+1)*127;
 			var z = abs(cart[2])*127;
@@ -25,9 +25,10 @@
 		}
 	}.play;
 
+    // Quesr object 4 controls only the DARK
 	~midi_sender_DARK = Routine {
 		loop {
-			var cart = ~xyz_BUS[2].getnSynchronous(3);
+			var cart = ~quest_xyz_BUS[3].getnSynchronous(3);
 			var x = abs(cart[0])*127;
 			var y = (cart[1]+1)*127;
 			var z = abs(cart[2])*127;
