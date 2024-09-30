@@ -30,8 +30,13 @@ SynthDef(\quad_freezer, {
 	|
 	inbus,
 	outbus,
-	gainbus
+	gainbus,
+	threshbus,
+	crushbus,
+	lpbus
 	|
+
+	var thresholds = [0.44,0.48,0.52,0.56];
 
 	// input signal
 	var input     = SoundIn.ar(inbus);
@@ -39,11 +44,20 @@ SynthDef(\quad_freezer, {
 
 	// do an FFT to all the signals
 	var fft = FFT(LocalBuf(2048.dup(4), 1), input);
-	var chain = PV_Freeze(fft, outgain > 0.7);
+	var chain = PV_Freeze(fft,In.kr(threshbus)>thresholds);
 
-	Out.ar(outbus,0.5*IFFT(chain));
+	var td    = IFFT(chain);
+
+	var crush = round(24-(23*pow(abs(In.kr(crushbus)),0.33)));
+
+	var bad = Decimator.ar(td,s.sampleRate,crush);
+
+	var out = LPF.ar(bad, In.kr( 20000 * (1-abs(In.kr(lpbus)) ))   );
+
+	Out.ar(outbus,bad);
 
 }).add;
+
 
 SynthDef(\quad_pdf, {
 	|
