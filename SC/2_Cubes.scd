@@ -121,7 +121,6 @@ s.waitForBoot({
 	~dark_energy = {
 
 		var in = SoundIn.ar(2);
-
 		Out.ar(~ambi_BUS, in);//*Array.fill(~n_hoa_channels,1));
 	}.play;
 

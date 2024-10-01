@@ -1,3 +1,35 @@
+SynthDef(\quad_grainer,
+	{
+		|
+		outbus,
+		buffer,
+		centerbus    = 0,
+		crushbus     = 1,
+		densitybus   = 1,
+		durbus       = 1,
+		compressbus = 0,
+		pitch    = 1,
+		gainbus
+		|
+
+		var triggers, c;
+
+		var center   = Clip.kr((In.kr(centerbus)+1)*0.5,0,1);
+		var	outgain  = Clip.kr(pow(1*(In.kr(gainbus)+1),1),0,2);
+		var density  = Clip.kr(100*(In.kr(densitybus)+1),0,100);
+		var dur      = Clip.kr(0.2*(In.kr(durbus)+1),0,1);
+		var compress = Clip.kr(1*(In.kr(durbus)+1),0,2);
+
+		var crush = max(1, round((24*pow(abs(In.kr(crushbus)+1),1))));
+
+		c =   center + Rand(0,0.01) * BufDur.kr(buffer);
+		triggers    = Impulse.ar(density, compress* [0, 0.25, 0.5, 0.75]);
+
+		Out.ar(outbus,   outgain * Decimator.ar(TGrains.ar(1, triggers, buffer, pitch, c, dur), s.sampleRate, crush););
+
+}).add;
+
+
 
 SynthDef(\quad_filter, {
 	|
