@@ -1,25 +1,47 @@
-s.options.numOutputBusChannels = 4;
-s.boot;
-
-
-c = {Out.kr(0,MouseX.kr(-1.1))}.play;
-d = {Out.kr(1,MouseY.kr(-1.1))}.play;
-
-
-
-
 
 ~bird_buffer = Buffer.read(s,"/home/anwaldt/SOUND/2CUBES/WAV/rainbirds.wav");
-x = Synth(\quad_grainer,[\buffer, ~bird_buffer, \centerbus, 0, \desitybus, 0, \durbus, 1, \compbus,0, \crushbus,1,\gainbus,1])
 
-x.free
+(
 
-s.scope(1,0,rate:'control')
-x = Synth(\quad_freezer,[\threshbus, 0, \crushbus,1, \lpbus, 1])
+~bird_grainer  = Synth(\quad_grainer,[
+	\buffer, ~bird_buffer,
+	\outbus, ~input_BUS.index+12,
+	\centerbus, ~quest_xyz_BUS[3].index,
+	\densitybus, ~quest_xyz_BUS[3].index+2,
+	\durbus, ~quest_xyz_BUS[3].index+2,
+	\crushbus,~quest_xyz_BUS[3].index+1,
+	\gainbus,~quest_xyz_BUS[3].index+1
+],~effects_GROUP);
 
+~bird_grainer_splitter = Synth(\aed_splitter,
+	[\inbus,    ~quest_aed_BUS[2],
+		\outbus_1, ~aed_BUS[12],
+		\outbus_2, ~aed_BUS[13],
+		\outbus_3, ~aed_BUS[14],
+		\outbus_4, ~aed_BUS[15]
+],~effects_GROUP);
+
+)
+
+(
+~bird_grainer.free;
+~bird_grainer_splitter.free;
+)
 
 
 
 ~midi_sender_N1.stop;
 ~midi_sender_N2.stop;
 ~midi_sender_DARK.stop;
+
+
+
+
+
+
+~bass_filter_synth = Synth(\quad_filter,[
+	// pdf buses
+	\inbus, 2,
+	\outbus,      ~input_BUS.index+8,
+	\gainbus,     ~quest_xyz_BUS[2].index+1],
+~effects_GROUP);

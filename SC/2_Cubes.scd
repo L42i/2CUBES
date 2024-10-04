@@ -115,74 +115,7 @@ s.waitForBoot({
 	//
 	////////////////////////////////////////////////////////////////////////////////////////
 
-	////////////////////////////////////////////////////////////////////////////////////////
-	// dark energy simply goes to all Ambi buses
-
-	~dark_energy = {
-
-		var in = SoundIn.ar(2);
-		Out.ar(~ambi_BUS, in);//*Array.fill(~n_hoa_channels,1));
-	}.play;
-
-		////////////////////////////////////////////////////////////////////////////////////////
-
-	~bass_low_synth = Synth(\quad_shift,[
-		// pdf buses
-		\inbus, 0,
-		\outbus, ~input_BUS.index+16,
-		\gainbus, ~quest_xyz_BUS[4].index+1,
-		\pitchbus, ~quest_xyz_BUS[4].index+1,
-		\delaybus, ~quest_xyz_BUS[4].index,
-		\feedbackbus, ~quest_xyz_BUS[4].index+2],
-	~effects_GROUP);
-
-	~bass_low_splitter = Synth(\aed_splitter,[
-		\inbus,    ~quest_aed_BUS[4],
-		\outbus_1, ~aed_BUS[16],
-		\outbus_2, ~aed_BUS[17],
-		\outbus_3, ~aed_BUS[18],
-		\outbus_4, ~aed_BUS[19]]);
-
-	s.sync;
-
-	////////////////////////////////////////////////////////////////////////////////////////
-
-	~bass_high_synth = Synth(\quad_pdf,[
-		// pdf buses
-		\inbus, 1,
-		\outbus, ~input_BUS.index+20,
-		\gainbus, ~quest_xyz_BUS[5].index+1,
-		\pitchbus, ~quest_xyz_BUS[5].index+1,
-		\delaybus, ~quest_xyz_BUS[5].index,
-		\feedbackbus, ~quest_xyz_BUS[5].index+2],
-	~effects_GROUP);
-
-	~bass_high_splitter = Synth(\aed_splitter,[
-		\inbus,    ~quest_aed_BUS[5],
-		\outbus_1, ~aed_BUS[20],
-		\outbus_2, ~aed_BUS[21],
-		\outbus_3, ~aed_BUS[22],
-		\outbus_4, ~aed_BUS[23]]);
-
-	s.sync;
-
-	////////////////////////////////////////////////////////////////////////////////////////
-
-	~bass_filter_synth = Synth(\quad_filter,[
-		// pdf buses
-		\inbus, 1,
-		\outbus,      ~input_BUS.index+24,
-		\gainbus,     ~quest_xyz_BUS[6].index+1],
-	~effects_GROUP);
-
-	~bass_filter_splitter = Synth(\aed_splitter,[
-		\inbus,    ~quest_aed_BUS[6],
-		\outbus_1, ~aed_BUS[24],
-		\outbus_2, ~aed_BUS[25],
-		\outbus_3, ~aed_BUS[26],
-		\outbus_4, ~aed_BUS[27]]);
-
-	s.sync;
+	// load(thisProcess.nowExecutingPath.dirname++"/hvc.scd");
 
 	////////////////////////////////////////////////////////////////////////////////////////
 	// The output node
@@ -190,6 +123,7 @@ s.waitForBoot({
 
 	~hoa_output = {|gain=1| Out.ar(0 ,gain * In.ar(~ambi_BUS.index,~n_hoa_channels))}.play;
 	s.sync;
+
 	// goes into the output group
 	~hoa_output.moveToTail(~output_GROUP);
 	~hoa_output.set(\gain,0.75);

@@ -7,27 +7,28 @@ SynthDef(\quad_grainer,
 		crushbus     = 1,
 		densitybus   = 1,
 		durbus       = 1,
-		compressbus = 0,
 		pitch    = 1,
 		gainbus
 		|
 
 		var triggers, c;
 
-		var center   = Clip.kr((In.kr(centerbus)+1)*0.5,0,1);
 		var	outgain  = Clip.kr(pow(1*(In.kr(gainbus)+1),1),0,2);
+		var center   = Clip.kr((In.kr(centerbus)+1)*0.5,0,1);
 		var density  = Clip.kr(100*(In.kr(densitybus)+1),0,100);
-		var dur      = Clip.kr(0.2*(In.kr(durbus)+1),0,1);
-		var compress = Clip.kr(1*(In.kr(durbus)+1),0,2);
+		var dur      = Clip.kr(0.2*abs(In.kr(durbus)),0.001,10);
+		var crush    = Clip.kr(round((24*pow(-1*In.kr(crushbus)+1,1))),1,24);
 
-		var crush = max(1, round((24*pow(abs(In.kr(crushbus)+1),1))));
+		var crushgain = ((crush*crush)/24);
 
-		c =   center + Rand(0,0.01) * BufDur.kr(buffer);
-		triggers    = Impulse.ar(density, compress* [0, 0.25, 0.5, 0.75]);
+		triggers    = Trig.kr(WhiteNoise.kr([1,1,1,1]));
 
-		Out.ar(outbus,   outgain * Decimator.ar(TGrains.ar(1, triggers, buffer, pitch, c, dur), s.sampleRate, crush););
+		c =   center + TRand.kr(0,0.1,triggers) * BufDur.kr(buffer);
+
+		Out.ar(outbus,   outgain * crushgain* Decimator.ar(TGrains.ar(1, triggers, buffer, pitch, c, dur), s.sampleRate, crush););
 
 }).add;
+
 
 
 
@@ -81,12 +82,15 @@ SynthDef(\quad_freezer, {
 	var td    = IFFT(chain);
 
 	var crush = round(24-(23*pow(abs(In.kr(crushbus)),0.33)));
+	var crushgain = (crush/24);
 
 	var bad = Decimator.ar(td,s.sampleRate,crush);
 
-	var out = LPF.ar(bad, In.kr( 20000 * (1-abs(In.kr(lpbus)) ))   );
+	var cutoff = Lag.kr(Clip.kr(20000 - (15000 * abs(In.kr(lpbus))) ,10,20000),0.05);
 
-	Out.ar(outbus,bad);
+	var out = LPF.ar(bad, cutoff);
+
+	Out.ar(outbus,out*crushgain*outgain);
 
 }).add;
 
@@ -109,7 +113,7 @@ SynthDef(\quad_pdf, {
 
 	var proc = PitchShift.ar(feedback,0.2, In.kr(pitchbus)+1);
 	// feedback-delay parameters:
-	var times = max(0.001,     [1,1.25,1.5,1.85] * abs(In.kr(delaybus)));
+	var times = max(0.001,   Lag.kr(0.0+(0.5*[1,1.25,1.5,1.85] * abs(In.kr(delaybus))),0.1));
 	var gain = max(0, min(1.01, abs(In.kr(feedbackbus))));
 	var out  = DelayC.ar(input + proc, 1, times);
 
