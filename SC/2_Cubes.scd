@@ -80,6 +80,7 @@ s.waitForBoot({
 	for (0, ~n_objects -1, {arg i;
 		~quest_aed_BUS = ~quest_aed_BUS.add(Bus.control(s,3));
 		~quest_xyz_BUS = ~quest_xyz_BUS.add(Bus.control(s,3));
+		~quest_pry_BUS = ~quest_pry_BUS.add(Bus.control(s,3));
 	});
 
 	// the aed_BUSes are mapped to the positions of the Ambi sources
@@ -134,9 +135,6 @@ s.waitForBoot({
 
 	load(thisProcess.nowExecutingPath.dirname++"/oscdefs.scd");
 
-	// open our extra ports for OSC and give feedback
-	thisProcess.openUDPPort(~osc_IN);
-	postln("Listening for OSC on ports: "++thisProcess.openPorts);
 
 
 	////////////////////////////////////////////////////////////////////////////////////////

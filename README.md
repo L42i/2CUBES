@@ -21,10 +21,11 @@ Create 2 virtual devices - this solution is non-permanent.
     $ sudo modprobe v4l2loopback devices=2 video_nr=10,11 card_label='Quest1','Quest2'
 
 
-To make it permanent, create '''/etc/modules-load.d/v4l2loopback.conf''' with
+To make it permanent, create '''/etc/modules-load.d/v4l2loopback.conf''' with these contents:
 
-    $ sudo echo "options v4l2loopback devices=2 video_nr=10,11 card_label='Quest1','Quest2'" > /etc/modprobe.d/v4l2loopback.conf
+    v4l2loopback
 
+Or: add the line to /etc/modules.
 
 ### Stream ADB to Virtual Video Device
 

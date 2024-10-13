@@ -1,3 +1,27 @@
+
+	// open our extra ports for OSC and give feedback
+	thisProcess.openUDPPort(~osc_IN);
+	postln("Listening for OSC on ports: "++thisProcess.openPorts);
+
+
+OSCdef('/quest/1/pry',
+	{
+
+		arg msg, time, addr, recvPort;
+		var idx = msg[1]-1;
+
+		~quest_pry_BUS[idx].setAt(0, pow(2*msg[2],4));
+	~quest_pry_BUS[idx].setAt(1, pow(2*msg[3],4));
+		~quest_pry_BUS[idx].setAt(2, pow(2*msg[4],4));
+
+		// pass message on
+		//~litespat_OSC.sendMsg(msg[0],msg[1],msg[2],msg[3],msg[4]);
+
+		//msg.postln;
+
+},'/quest/1/pry');
+
+
 OSCdef('/quest/1/aed',
 	{
 
