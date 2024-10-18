@@ -1,3 +1,40 @@
+SynthDef(\quad_input_grainer,
+	{
+		|
+		inbus,
+		outbus,
+		densitybus,
+		durbus,
+		feedbackbus,
+		cutoffbus,
+		rqbus,
+		gainbus
+		|
+
+		var triggers, c, grainer;
+
+		var	outgain  = Clip.kr(pow(1*(In.kr(gainbus)+1),1),0,2);
+		var	fbgain   = Clip.kr(pow(0.5*(In.kr(feedbackbus)+1),2),0,1);
+		var density  = Clip.kr(1-abs(In.kr(densitybus)),0,1);
+		var dur      = Clip.kr(In.kr(durbus)+1*0.1,0.0001,1);
+
+		var freq     = Clip.kr(In.kr(cutoffbus)+1*20000,10,20000);
+		var rq       = Clip.kr(In.kr(rqbus)+1*3,0.1,3);
+
+		var feedback = LocalIn.ar(4);
+
+		triggers     = Trig1.kr(WhiteNoise.kr([1,-1,1,-1])+[density,density,density,density],dur);
+
+		grainer      = RLPF.ar(GrainIn.ar(1, triggers, dur, SoundIn.ar(inbus)),freq,rq);
+
+		grainer      = DelayC.ar(grainer+feedback,2,[0.015 , 0.0173 , 0.03612 , 0.02752]);
+
+		LocalOut.ar(fbgain*grainer);
+
+		Out.ar(outbus, grainer * outgain);
+
+}).add;
+
 SynthDef(\quad_grainer,
 	{
 		|

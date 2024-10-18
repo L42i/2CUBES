@@ -59,6 +59,30 @@
 	\outbus_3, ~aed_BUS[10],
 	\outbus_4, ~aed_BUS[11]],~effects_GROUP);
 
+
+////////////////////////////////////////////////////////////////////////////////////////
+
+
+~bird_grainer  = Synth(\quad_grainer,[
+	\buffer, ~bird_buffer,
+	\outbus, ~input_BUS.index+12,
+	\centerbus, ~quest_xyz_BUS[3].index,
+	\densitybus, ~quest_xyz_BUS[3].index+2,
+	\durbus, ~quest_xyz_BUS[3].index+2,
+	\crushbus,~quest_xyz_BUS[3].index+1,
+	\gainbus,~quest_xyz_BUS[3].index+1
+],~effects_GROUP);
+
+~bird_grainer_splitter = Synth(\aed_splitter,
+	[\inbus,    ~quest_aed_BUS[2],
+		\outbus_1, ~aed_BUS[12],
+		\outbus_2, ~aed_BUS[13],
+		\outbus_3, ~aed_BUS[14],
+		\outbus_4, ~aed_BUS[15]
+],~effects_GROUP);
+
+
+
 ////////////////////////////////////////////////////////////////////////////////////////
 // dark energy simply goes to all Ambi buses
 
