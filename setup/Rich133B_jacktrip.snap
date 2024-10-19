@@ -11,6 +11,13 @@
   <client name="Cre8audioNiftyCASE">
     <port id="0" />
   </client>
+  <client name="USB MIDI Dark Energy">
+    <port id="0" />
+  </client>
+  <client name="Cre8audioNiftyCASE">
+    <port id="0" />
+  </client>
+  <client name="Client-129" />
   <client name="SuperCollider">
     <port id="3" />
     <port id="4">
@@ -20,7 +27,6 @@
       <connection client="Cre8audioNiftyCASE" port="0" />
     </port>
   </client>
-  <client name="Client-130" />
   <client name="PipeWire-System" />
   <client name="PipeWire-RT-Event" />
 </alsa>
@@ -40,9 +46,11 @@
     </port>
     <port name="capture_5">
       <connection port="2CUBES:in_5" />
+      <connection port="REAPER:in37" />
     </port>
     <port name="capture_6">
       <connection port="2CUBES:in_6" />
+      <connection port="REAPER:in38" />
     </port>
     <port name="capture_7">
       <connection port="2CUBES:in_7" />
@@ -69,100 +77,100 @@
   </client>
   <client name="AllRADecoder">
     <port name="out_1">
-      <connection port="10.11.12.100:send_1" />
+      <connection port="Terra:send_1" />
     </port>
     <port name="out_2">
-      <connection port="10.11.12.100:send_2" />
+      <connection port="Terra:send_2" />
     </port>
     <port name="out_3">
-      <connection port="10.11.12.100:send_3" />
+      <connection port="Terra:send_3" />
     </port>
     <port name="out_4">
-      <connection port="10.11.12.100:send_4" />
+      <connection port="Terra:send_4" />
     </port>
     <port name="out_5">
-      <connection port="10.11.12.100:send_5" />
+      <connection port="Terra:send_5" />
     </port>
     <port name="out_6">
-      <connection port="10.11.12.100:send_6" />
+      <connection port="Terra:send_6" />
     </port>
     <port name="out_7">
-      <connection port="10.11.12.100:send_7" />
+      <connection port="Terra:send_7" />
     </port>
     <port name="out_8">
-      <connection port="10.11.12.100:send_8" />
+      <connection port="Terra:send_8" />
     </port>
     <port name="out_9">
-      <connection port="10.11.12.100:send_9" />
+      <connection port="Terra:send_9" />
     </port>
     <port name="out_10">
-      <connection port="10.11.12.100:send_10" />
+      <connection port="Terra:send_10" />
     </port>
     <port name="out_11">
-      <connection port="10.11.12.100:send_11" />
+      <connection port="Terra:send_11" />
     </port>
     <port name="out_12">
-      <connection port="10.11.12.100:send_12" />
+      <connection port="Terra:send_12" />
     </port>
     <port name="out_13">
-      <connection port="10.11.12.100:send_13" />
+      <connection port="Terra:send_13" />
     </port>
     <port name="out_14">
-      <connection port="10.11.12.100:send_14" />
+      <connection port="Terra:send_14" />
     </port>
     <port name="out_15">
-      <connection port="10.11.12.100:send_15" />
+      <connection port="Terra:send_15" />
     </port>
     <port name="out_16">
-      <connection port="10.11.12.100:send_16" />
+      <connection port="Terra:send_16" />
     </port>
     <port name="out_17">
-      <connection port="10.11.12.100:send_17" />
+      <connection port="Terra:send_17" />
     </port>
     <port name="out_18">
-      <connection port="10.11.12.100:send_18" />
+      <connection port="Terra:send_18" />
     </port>
     <port name="out_19">
-      <connection port="10.11.12.100:send_19" />
+      <connection port="Terra:send_19" />
     </port>
     <port name="out_20">
-      <connection port="10.11.12.100:send_20" />
+      <connection port="Terra:send_20" />
     </port>
     <port name="out_21">
-      <connection port="10.11.12.100:send_21" />
+      <connection port="Terra:send_21" />
     </port>
     <port name="out_22">
-      <connection port="10.11.12.100:send_22" />
+      <connection port="Terra:send_22" />
     </port>
     <port name="out_23">
-      <connection port="10.11.12.100:send_23" />
+      <connection port="Terra:send_23" />
     </port>
     <port name="out_24">
-      <connection port="10.11.12.100:send_24" />
+      <connection port="Terra:send_24" />
     </port>
     <port name="out_25">
-      <connection port="10.11.12.100:send_25" />
+      <connection port="Terra:send_25" />
     </port>
     <port name="out_26">
-      <connection port="10.11.12.100:send_26" />
+      <connection port="Terra:send_26" />
     </port>
     <port name="out_27">
-      <connection port="10.11.12.100:send_27" />
+      <connection port="Terra:send_27" />
     </port>
     <port name="out_28">
-      <connection port="10.11.12.100:send_28" />
+      <connection port="Terra:send_28" />
     </port>
     <port name="out_29">
-      <connection port="10.11.12.100:send_29" />
+      <connection port="Terra:send_29" />
     </port>
     <port name="out_30">
-      <connection port="10.11.12.100:send_30" />
+      <connection port="Terra:send_30" />
     </port>
     <port name="out_31">
-      <connection port="10.11.12.100:send_31" />
+      <connection port="Terra:send_31" />
     </port>
     <port name="out_32">
-      <connection port="10.11.12.100:send_32" />
+      <connection port="Terra:send_32" />
     </port>
     <port name="out_33" />
     <port name="out_34" />
@@ -197,117 +205,7 @@
     <port name="out_63" />
     <port name="out_64" />
   </client>
-  <client name="2CUBES">
-    <port name="out_1">
-      <connection port="AllRADecoder:in_1" />
-    </port>
-    <port name="out_2">
-      <connection port="AllRADecoder:in_2" />
-    </port>
-    <port name="out_3">
-      <connection port="AllRADecoder:in_3" />
-    </port>
-    <port name="out_4">
-      <connection port="AllRADecoder:in_4" />
-    </port>
-    <port name="out_5">
-      <connection port="AllRADecoder:in_5" />
-    </port>
-    <port name="out_6">
-      <connection port="AllRADecoder:in_6" />
-    </port>
-    <port name="out_7">
-      <connection port="AllRADecoder:in_7" />
-    </port>
-    <port name="out_8">
-      <connection port="AllRADecoder:in_8" />
-    </port>
-    <port name="out_9">
-      <connection port="AllRADecoder:in_9" />
-    </port>
-    <port name="out_10">
-      <connection port="AllRADecoder:in_10" />
-    </port>
-    <port name="out_11">
-      <connection port="AllRADecoder:in_11" />
-    </port>
-    <port name="out_12">
-      <connection port="AllRADecoder:in_12" />
-    </port>
-    <port name="out_13">
-      <connection port="AllRADecoder:in_13" />
-    </port>
-    <port name="out_14">
-      <connection port="AllRADecoder:in_14" />
-    </port>
-    <port name="out_15">
-      <connection port="AllRADecoder:in_15" />
-    </port>
-    <port name="out_16">
-      <connection port="AllRADecoder:in_16" />
-    </port>
-    <port name="out_17">
-      <connection port="AllRADecoder:in_17" />
-    </port>
-    <port name="out_18">
-      <connection port="AllRADecoder:in_18" />
-    </port>
-    <port name="out_19">
-      <connection port="AllRADecoder:in_19" />
-    </port>
-    <port name="out_20">
-      <connection port="AllRADecoder:in_20" />
-    </port>
-    <port name="out_21">
-      <connection port="AllRADecoder:in_21" />
-    </port>
-    <port name="out_22">
-      <connection port="AllRADecoder:in_22" />
-    </port>
-    <port name="out_23">
-      <connection port="AllRADecoder:in_23" />
-    </port>
-    <port name="out_24">
-      <connection port="AllRADecoder:in_24" />
-    </port>
-    <port name="out_25">
-      <connection port="AllRADecoder:in_25" />
-    </port>
-    <port name="out_26">
-      <connection port="AllRADecoder:in_26" />
-    </port>
-    <port name="out_27">
-      <connection port="AllRADecoder:in_27" />
-    </port>
-    <port name="out_28">
-      <connection port="AllRADecoder:in_28" />
-    </port>
-    <port name="out_29">
-      <connection port="AllRADecoder:in_29" />
-    </port>
-    <port name="out_30">
-      <connection port="AllRADecoder:in_30" />
-    </port>
-    <port name="out_31">
-      <connection port="AllRADecoder:in_31" />
-    </port>
-    <port name="out_32">
-      <connection port="AllRADecoder:in_32" />
-    </port>
-    <port name="out_33">
-      <connection port="AllRADecoder:in_33" />
-    </port>
-    <port name="out_34">
-      <connection port="AllRADecoder:in_34" />
-    </port>
-    <port name="out_35">
-      <connection port="AllRADecoder:in_35" />
-    </port>
-    <port name="out_36">
-      <connection port="AllRADecoder:in_36" />
-    </port>
-  </client>
-  <client name="10.11.12.100">
+  <client name="Terra">
     <port name="receive_1" />
     <port name="receive_2" />
     <port name="receive_3" />
@@ -340,6 +238,202 @@
     <port name="receive_30" />
     <port name="receive_31" />
     <port name="receive_32" />
+  </client>
+  <client name="2CUBES">
+    <port name="out_1">
+      <connection port="AllRADecoder:in_1" />
+      <connection port="REAPER:in1" />
+    </port>
+    <port name="out_2">
+      <connection port="AllRADecoder:in_2" />
+      <connection port="REAPER:in2" />
+    </port>
+    <port name="out_3">
+      <connection port="AllRADecoder:in_3" />
+      <connection port="REAPER:in3" />
+    </port>
+    <port name="out_4">
+      <connection port="AllRADecoder:in_4" />
+      <connection port="REAPER:in4" />
+    </port>
+    <port name="out_5">
+      <connection port="AllRADecoder:in_5" />
+      <connection port="REAPER:in5" />
+    </port>
+    <port name="out_6">
+      <connection port="AllRADecoder:in_6" />
+      <connection port="REAPER:in6" />
+    </port>
+    <port name="out_7">
+      <connection port="AllRADecoder:in_7" />
+      <connection port="REAPER:in7" />
+    </port>
+    <port name="out_8">
+      <connection port="AllRADecoder:in_8" />
+      <connection port="REAPER:in8" />
+    </port>
+    <port name="out_9">
+      <connection port="AllRADecoder:in_9" />
+      <connection port="REAPER:in9" />
+    </port>
+    <port name="out_10">
+      <connection port="AllRADecoder:in_10" />
+      <connection port="REAPER:in10" />
+    </port>
+    <port name="out_11">
+      <connection port="AllRADecoder:in_11" />
+      <connection port="REAPER:in11" />
+    </port>
+    <port name="out_12">
+      <connection port="AllRADecoder:in_12" />
+      <connection port="REAPER:in12" />
+    </port>
+    <port name="out_13">
+      <connection port="AllRADecoder:in_13" />
+      <connection port="REAPER:in13" />
+    </port>
+    <port name="out_14">
+      <connection port="AllRADecoder:in_14" />
+      <connection port="REAPER:in14" />
+    </port>
+    <port name="out_15">
+      <connection port="AllRADecoder:in_15" />
+      <connection port="REAPER:in15" />
+    </port>
+    <port name="out_16">
+      <connection port="AllRADecoder:in_16" />
+      <connection port="REAPER:in16" />
+    </port>
+    <port name="out_17">
+      <connection port="AllRADecoder:in_17" />
+      <connection port="REAPER:in17" />
+    </port>
+    <port name="out_18">
+      <connection port="AllRADecoder:in_18" />
+      <connection port="REAPER:in18" />
+    </port>
+    <port name="out_19">
+      <connection port="AllRADecoder:in_19" />
+      <connection port="REAPER:in19" />
+    </port>
+    <port name="out_20">
+      <connection port="AllRADecoder:in_20" />
+      <connection port="REAPER:in20" />
+    </port>
+    <port name="out_21">
+      <connection port="AllRADecoder:in_21" />
+      <connection port="REAPER:in21" />
+    </port>
+    <port name="out_22">
+      <connection port="AllRADecoder:in_22" />
+      <connection port="REAPER:in22" />
+    </port>
+    <port name="out_23">
+      <connection port="AllRADecoder:in_23" />
+      <connection port="REAPER:in23" />
+    </port>
+    <port name="out_24">
+      <connection port="AllRADecoder:in_24" />
+      <connection port="REAPER:in24" />
+    </port>
+    <port name="out_25">
+      <connection port="AllRADecoder:in_25" />
+      <connection port="REAPER:in25" />
+    </port>
+    <port name="out_26">
+      <connection port="AllRADecoder:in_26" />
+      <connection port="REAPER:in26" />
+    </port>
+    <port name="out_27">
+      <connection port="AllRADecoder:in_27" />
+      <connection port="REAPER:in27" />
+    </port>
+    <port name="out_28">
+      <connection port="AllRADecoder:in_28" />
+      <connection port="REAPER:in28" />
+    </port>
+    <port name="out_29">
+      <connection port="AllRADecoder:in_29" />
+      <connection port="REAPER:in29" />
+    </port>
+    <port name="out_30">
+      <connection port="AllRADecoder:in_30" />
+      <connection port="REAPER:in30" />
+    </port>
+    <port name="out_31">
+      <connection port="AllRADecoder:in_31" />
+      <connection port="REAPER:in31" />
+    </port>
+    <port name="out_32">
+      <connection port="AllRADecoder:in_32" />
+      <connection port="REAPER:in32" />
+    </port>
+    <port name="out_33">
+      <connection port="AllRADecoder:in_33" />
+      <connection port="REAPER:in33" />
+    </port>
+    <port name="out_34">
+      <connection port="AllRADecoder:in_34" />
+      <connection port="REAPER:in34" />
+    </port>
+    <port name="out_35">
+      <connection port="AllRADecoder:in_35" />
+      <connection port="REAPER:in35" />
+    </port>
+    <port name="out_36">
+      <connection port="AllRADecoder:in_36" />
+      <connection port="REAPER:in36" />
+    </port>
+  </client>
+  <client name="REAPER">
+    <port name="out1" />
+    <port name="out2" />
+    <port name="out3" />
+    <port name="out4" />
+    <port name="out5" />
+    <port name="out6" />
+    <port name="out7" />
+    <port name="out8" />
+    <port name="out9" />
+    <port name="out10" />
+    <port name="out11" />
+    <port name="out12" />
+    <port name="out13" />
+    <port name="out14" />
+    <port name="out15" />
+    <port name="out16" />
+    <port name="out17" />
+    <port name="out18" />
+    <port name="out19" />
+    <port name="out20" />
+    <port name="out21" />
+    <port name="out22" />
+    <port name="out23" />
+    <port name="out24" />
+    <port name="out25" />
+    <port name="out26" />
+    <port name="out27" />
+    <port name="out28" />
+    <port name="out29" />
+    <port name="out30" />
+    <port name="out31" />
+    <port name="out32" />
+    <port name="out33" />
+    <port name="out34" />
+    <port name="out35" />
+    <port name="out36" />
+    <port name="out37" />
+    <port name="out38" />
+    <port name="out39" />
+    <port name="out40" />
+    <port name="out41" />
+    <port name="out42" />
+    <port name="out43" />
+    <port name="out44" />
+    <port name="out45" />
+    <port name="out46" />
+    <port name="out47" />
+    <port name="out48" />
   </client>
 </jack>
 </aj-snapshot>

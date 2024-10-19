@@ -2,7 +2,13 @@
 ~luhee_1_splitter
 
 
+~bird_buffer = Buffer.read(s,"/home/anwaldt/SOUND/2CUBES/WAV/rainbirds.wav");
 
+(
+
+
+
+)
 
 (
 ~bird_grainer.free;

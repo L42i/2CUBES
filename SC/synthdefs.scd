@@ -13,21 +13,22 @@ SynthDef(\quad_input_grainer,
 
 		var triggers, c, grainer;
 
-		var	outgain  = Clip.kr(pow(1*(In.kr(gainbus)+1),1),0,2);
-		var	fbgain   = Clip.kr(pow(0.5*(In.kr(feedbackbus)+1),2),0,1);
+		var	outgain  = Clip.kr(pow(2*(In.kr(gainbus)+1),2),0,2);
+
+		var	fbgain   = Clip.kr(pow(0.5*(In.kr(feedbackbus)+1),2),0,0.95);
 		var density  = Clip.kr(1-abs(In.kr(densitybus)),0,1);
 		var dur      = Clip.kr(In.kr(durbus)+1*0.1,0.0001,1);
 
-		var freq     = Clip.kr(In.kr(cutoffbus)+1*20000,10,20000);
-		var rq       = Clip.kr(In.kr(rqbus)+1*3,0.1,3);
+		var freq     = Clip.kr(Lag.kr(20000 * (In.kr(cutoffbus)),0.1),10,12000);
+		var rq       = Clip.kr(Lag.kr(In.kr(rqbus)*2,0.1),1,2);
 
 		var feedback = LocalIn.ar(4);
 
 		triggers     = Trig1.kr(WhiteNoise.kr([1,-1,1,-1])+[density,density,density,density],dur);
 
-		grainer      = RLPF.ar(GrainIn.ar(1, triggers, dur, SoundIn.ar(inbus)),freq,rq);
+		grainer      = RHPF.ar(GrainIn.ar(1, triggers, dur, SoundIn.ar(inbus)),freq,rq);
 
-		grainer      = DelayC.ar(grainer+feedback,2,[0.015 , 0.0173 , 0.03612 , 0.02752]);
+		grainer      = DelayC.ar(grainer+feedback,2,[0.15 , 0.173 , 0.1612 , 0.1752]);
 
 		LocalOut.ar(fbgain*grainer);
 
@@ -50,15 +51,15 @@ SynthDef(\quad_grainer,
 
 		var triggers, c;
 
-		var	outgain  = Clip.kr(pow(1*(In.kr(gainbus)+1),1),0,2);
+		var	outgain  = Clip.kr(4*pow((In.kr(gainbus)+1),1),0,2);
 		var center   = Clip.kr((In.kr(centerbus)+1)*0.5,0,1);
 		var density  = Clip.kr(100*(In.kr(densitybus)+1),0,100);
-		var dur      = Clip.kr(0.2*abs(In.kr(durbus)),0.001,10);
+		var dur      = Clip.kr(0.5-(1*abs(In.kr(durbus))),0.0001,1);
 		var crush    = Clip.kr(round((24*pow(-1*In.kr(crushbus)+1,1))),1,24);
 
-		var crushgain = ((crush*crush)/24);
+		var crushgain = 2*(pow(crush,1.2)/24);
 
-		triggers    = Trig.kr(WhiteNoise.kr([1,1,1,1]));
+		triggers    = Trig.kr(WhiteNoise.kr([1,1,1,1]),0.01);
 
 		c =   center + TRand.kr(0,0.1,triggers) * BufDur.kr(buffer);
 
@@ -96,6 +97,7 @@ SynthDef(\quad_filter, {
 
 }).add;
 
+
 SynthDef(\quad_freezer, {
 	|
 	inbus,
@@ -110,7 +112,7 @@ SynthDef(\quad_freezer, {
 
 	// input signal
 	var input     = SoundIn.ar(inbus);
-	var	outgain   = Clip.kr(1*(In.kr(gainbus)+1),0,1);
+	var	outgain   = Clip.kr(2*pow(In.kr(gainbus)+1,1),0,2.5);
 
 	// do an FFT to all the signals
 	var fft = FFT(LocalBuf(2048.dup(4), 1), input);
@@ -119,7 +121,7 @@ SynthDef(\quad_freezer, {
 	var td    = IFFT(chain);
 
 	var crush = round(24-(23*pow(abs(In.kr(crushbus)),0.33)));
-	var crushgain = (crush/24);
+	var crushgain = 2*(sqrt(crush)/24);
 
 	var bad = Decimator.ar(td,s.sampleRate,crush);
 
@@ -148,11 +150,16 @@ SynthDef(\quad_pdf, {
 	var input    = SoundIn.ar(inbus);
 	var feedback = LocalIn.ar(4);
 
-	var proc = PitchShift.ar(feedback,0.2, In.kr(pitchbus)+1);
+	var proc = PitchShift.ar(feedback,0.2, Clip.kr(In.kr(pitchbus)+1,0.01,2));
+
+	var maindelay = Clip.kr(abs(In.kr(delaybus)),0.0001,10);
+
 	// feedback-delay parameters:
-	var times = max(0.001,   Lag.kr(0.0+(0.5*[1,1.25,1.5,1.85] * abs(In.kr(delaybus))),0.1));
-	var gain = max(0, min(1.01, abs(In.kr(feedbackbus))));
-	var out  = DelayC.ar(input + proc, 1, times);
+	var times = max(0.001,   Lag.kr(0.0+(0.5*[1,1.25,1.5,1.85] * maindelay),0.1));
+
+	var gain  = max(0.00001, min(1.1, abs(In.kr(feedbackbus))));
+
+	var out   = DelayC.ar(input + proc, 1, times);
 
 	LocalOut.ar(out*gain);
 	Out.ar(outbus,outgain*out);
@@ -167,17 +174,19 @@ SynthDef(\quad_shift, {
 	outbus,
 	gainbus,
 	pitchbus,
-	devbus
+	devbus,
+	foldbus
 	|
 
-	var	outgain  = Clip.kr(0.5*(In.kr(gainbus)+1),0,2);
+	var	outgain  = Clip.kr(0.5*(In.kr(gainbus)+1),0,1.5);
+	var	fold     = Clip.kr(10*(In.kr(foldbus))+1,0.01,10);
 
 	// input and feedback signals
 	var input     = SoundIn.ar(inbus);
 
 	var pitch     = 500*(In.kr(pitchbus)+1);
-	var deviate   = [-0.5,-0.25,0.25,0.5]*abs(In.kr(devbus));
-	var proc      = input * SinOsc.ar(pitch+(pitch*deviate));
+	var deviate   = [-0.5,-0.25,0.25,0.5]*abs(2*In.kr(devbus));
+	var proc      = input * Fold.ar(fold*SinOsc.ar(pitch+(pitch*deviate)), -1, 1);
 	Out.ar(outbus,outgain*proc);
 
 }).add;
@@ -249,3 +258,45 @@ SynthDef(\aed_splitter,
 
 }).add;
 
+
+
+
+
+SynthDef(\channel_strip, {
+
+	|
+	in_chan   = nil,
+	out_chan  = nil,
+	//
+	gain             = 1,
+	autogain        = 0,
+	//
+	freq             = 1,
+	lp_fixed_ratio   = 1,
+	rq               = 1.0,
+	//
+	hp_cutoff        = 1,
+	hp_fixed         = 1,
+	hp_reso          = 1
+	|
+
+	var out;
+
+	var f = Lag.kr(freq,0.01);
+
+	var input_sig  = In.ar(in_chan);
+
+	var g   = autogain * gain;
+
+	var fc_lp = min(20000,max(2, Lag.kr(lp_fixed_ratio, 0.01) * f));
+	var fc_hp = min(20000,max(2, Lag.kr(hp_cutoff, 0.01)      * hp_fixed));
+
+
+	rq      = max(min(rq,1), 0.1);
+	hp_reso = max(min(hp_reso,10), 0.1);
+
+	out = g * RHPF.ar(RLPF.ar(input_sig, fc_lp, rq), fc_hp, hp_reso);
+
+	Out.ar(out_chan, out);
+
+}).add;

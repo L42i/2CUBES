@@ -49,6 +49,11 @@ s.waitForBoot({
 	load(thisProcess.nowExecutingPath.dirname++"/synthdefs.scd");
 	s.sync;
 
+
+
+
+	~bird_buffer = Buffer.read(s,"/home/anwaldt/SOUND/2CUBES/WAV/rainbirds.wav");
+
 	////////////////////////////////////////////////////////////////////////////////////////
 	// GROUPS
 	////////////////////////////////////////////////////////////////////////////////////////
@@ -70,7 +75,10 @@ s.waitForBoot({
 	~ambi_BUS = Bus.audio(s, ~n_hoa_channels);
 
 	// these are used for the input signals AFTER effects
-	~input_BUS = Bus.audio(s, ~n_sources);
+	~multi_BUS = Bus.audio(s, ~n_sources);
+
+	// these are used for the input signals AFTER strips
+	~input_BUS = Bus.audio(s, ~n_objects);
 
 	////////////////////////////////////////////////////////////////////////////////////////
 	// Control buses
@@ -92,17 +100,14 @@ s.waitForBoot({
 
 
 	////////////////////////////////////////////////////////////////////////////////////////
-	// buffers
+	// create encoders
 	////////////////////////////////////////////////////////////////////////////////////////
 
-	~bird_buffer = Buffer.read(s,"/home/anwaldt/SOUND/2CUBES/WAV/rainbirds.wav");
 
-	s.sync;
 
 	////////////////////////////////////////////////////////////////////////////////////////
 	// create encoders
 	////////////////////////////////////////////////////////////////////////////////////////
-
 	for (0, ~n_sources-1, {arg i;
 
 		post('Adding HOA encoder module: ');
@@ -112,7 +117,7 @@ s.waitForBoot({
 		~hoa_panners = ~hoa_panners.add(
 			Synth(\hoa_mono_encoder,
 				[
-					\in_bus,  ~input_BUS.index+i,
+					\in_bus,  ~multi_BUS.index+i,
 					\out_bus, ~ambi_BUS.index,
 					\azimBus, ~aed_BUS[i].index+0,
 					\elevBus, ~aed_BUS[i].index+1,
@@ -153,6 +158,37 @@ s.waitForBoot({
 	////////////////////////////////////////////////////////////////////////////////////////
 
 	load(thisProcess.nowExecutingPath.dirname++"/midi.scd");
+
+
+
+
+		// this one is to be controlled manually:
+/*	~strip_gain_BUS        = Bus.control(s,~nChannels);
+	// this one is to be controlled by modulators:
+	~strip_autogain_BUS    = Bus.control(s,~nChannels);
+
+	// this one is to be controlled by modulators
+	~strip_lp_autocutoff_BUS  = Bus.control(s,~nChannels);
+	// this one is to be controlled manually:
+	~strip_lp_cutoff_BUS  = Bus.control(s,~nChannels);
+	~strip_lp_reso_BUS    = Bus.control(s,~nChannels);
+
+	// this one is to be controlled by modulators
+	~strip_hp_autocutoff_BUS  = Bus.control(s,~nChannels);
+	// this one is to be controlled manually:
+	~strip_hp_cutoff_BUS      = Bus.control(s,~nChannels);
+	~strip_hp_reso_BUS        = Bus.control(s,~nChannels);
+
+
+	s.sync;
+
+
+	~strip_controller_A = StripController(0,
+	~strip_gain_BUS,
+	~strip_lp_cutoff_BUS,
+	~strip_lp_reso_BUS,
+	~strip_hp_cutoff_BUS,
+	~strip_hp_reso_BUS);*/
 
 
 });

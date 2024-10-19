@@ -2,15 +2,14 @@
 //
 ////////////////////////////////////////////////////////////////////////////////////////
 
-
 ~hvc_1_synth = Synth(\quad_shift,[
 	// pdf buses
 	\inbus, 0,
-	\outbus, ~input_BUS.index+0,
-	\gainbus, ~quest_xyz_BUS[0].index+1,
-	\pitchbus, ~quest_xyz_BUS[0].index+1,
-	\delaybus, ~quest_xyz_BUS[0].index,
-	\feedbackbus, ~quest_xyz_BUS[0].index+2],
+	\outbus,   ~multi_BUS.index+0,
+	\gainbus,  ~quest_xyz_BUS[0].index+1,
+	\pitchbus, ~quest_xyz_BUS[0].index+0,
+	\devbus,   ~quest_xyz_BUS[0].index+2,
+	\foldbus,   ~quest_pry_BUS[0].index+2],
 ~effects_GROUP);
 
 ~hvc_1_splitter = Synth(\aed_splitter,[
@@ -25,11 +24,12 @@
 ~hvc_2_synth = Synth(\quad_pdf,[
 	// pdf buses
 	\inbus, 1,
-	\outbus, ~input_BUS.index+4,
-	\gainbus, ~quest_xyz_BUS[1].index+1,
-	\pitchbus, ~quest_xyz_BUS[1].index+1,
-	\delaybus, ~quest_xyz_BUS[1].index,
-	\feedbackbus, ~quest_xyz_BUS[1].index+2],
+	\outbus,   ~multi_BUS.index+4,
+	\gainbus,     ~quest_xyz_BUS[1].index+1,
+	\pitchbus,    ~quest_xyz_BUS[1].index+0,
+	\delaybus,    ~quest_pry_BUS[1].index+2,
+	\feedbackbus, ~quest_xyz_BUS[1].index+2
+],
 ~effects_GROUP);
 
 ~hvc_2_splitter = Synth(\aed_splitter,[
@@ -44,11 +44,11 @@
 ~hvc_3_synth = Synth(\quad_freezer,
 	[
 		\inbus, 2,
-		\outbus, ~input_BUS.index+8,
-		\gainbus, ~quest_xyz_BUS[2].index+1,
+		\outbus,    ~multi_BUS.index+8,
+		\gainbus,   ~quest_xyz_BUS[2].index+1,
 		\threshbus, ~quest_xyz_BUS[2].index+1,
-		\crushbus,~quest_xyz_BUS[2].index+0,
-		\lpbus,~quest_xyz_BUS[2].index+2
+		\crushbus,  ~quest_xyz_BUS[2].index+0,
+		\lpbus,     ~quest_xyz_BUS[2].index+2
 	],
 	~effects_GROUP);
 
@@ -61,16 +61,16 @@
 
 
 ////////////////////////////////////////////////////////////////////////////////////////
-
+//
 
 ~bird_grainer  = Synth(\quad_grainer,[
 	\buffer, ~bird_buffer,
-	\outbus, ~input_BUS.index+12,
-	\centerbus, ~quest_xyz_BUS[3].index,
+	\outbus, ~multi_BUS.index+12,
+	\centerbus,  ~quest_xyz_BUS[3].index,
 	\densitybus, ~quest_xyz_BUS[3].index+2,
-	\durbus, ~quest_xyz_BUS[3].index+2,
-	\crushbus,~quest_xyz_BUS[3].index+1,
-	\gainbus,~quest_xyz_BUS[3].index+1
+	\durbus,     ~quest_pry_BUS[3].index+1,
+	\crushbus,   ~quest_pry_BUS[3].index+2,
+	\gainbus,    ~quest_xyz_BUS[3].index+1
 ],~effects_GROUP);
 
 ~bird_grainer_splitter = Synth(\aed_splitter,
@@ -88,11 +88,13 @@
 
 ~dark_energy = {
 
+	arg	outgain = 1.4; //max(0, pow(0.5*(In.kr(~quest_xyz_BUS[3])+1),1));
 	var in      = SoundIn.ar([3]);
-	var	outgain = max(0, pow(0.5*(In.kr(~quest_xyz_BUS[3])+1),1));
-	Out.ar(~input_BUS.index+12, [in,in,in,in]*outgain);
+	Out.ar(~multi_BUS.index+12, [in,in,in,in]*outgain);
 
 }.play(~effects_GROUP);
+
+
 
 ~dark_energy_splitter = Synth(\aed_splitter,[
 	\inbus,    ~quest_aed_BUS[3],
