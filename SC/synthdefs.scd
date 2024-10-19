@@ -26,7 +26,7 @@ SynthDef(\quad_input_grainer,
 
 		triggers     = Trig1.kr(WhiteNoise.kr([1,-1,1,-1])+[density,density,density,density],dur);
 
-		grainer      = RHPF.ar(GrainIn.ar(1, triggers, dur, SoundIn.ar(inbus)),freq,rq);
+		grainer      = RHPF.ar(GrainIn.ar(1, triggers, dur, In.ar(inbus)),freq,rq);
 
 		grainer      = DelayC.ar(grainer+feedback,2,[0.15 , 0.173 , 0.1612 , 0.1752]);
 
@@ -78,7 +78,7 @@ SynthDef(\quad_filter, {
 	|
 
 	// input signal
-	var input     = SoundIn.ar(inbus);
+	var input     = In.ar(inbus);
 	var	outgain   = Clip.kr(1*(In.kr(gainbus)+1),0,2);
 
 	// filter all the signals
@@ -111,7 +111,7 @@ SynthDef(\quad_freezer, {
 	var thresholds = [0.44,0.48,0.52,0.56];
 
 	// input signal
-	var input     = SoundIn.ar(inbus);
+	var input     = In.ar(inbus);
 	var	outgain   = Clip.kr(2*pow(In.kr(gainbus)+1,1),0,2.5);
 
 	// do an FFT to all the signals
@@ -147,7 +147,7 @@ SynthDef(\quad_pdf, {
 	var	outgain  = Clip.kr(0.5*(In.kr(gainbus)+1),0,2);
 
 	// input and feedback signals
-	var input    = SoundIn.ar(inbus);
+	var input    = In.ar(inbus);
 	var feedback = LocalIn.ar(4);
 
 	var proc = PitchShift.ar(feedback,0.2, Clip.kr(In.kr(pitchbus)+1,0.01,2));
@@ -182,7 +182,7 @@ SynthDef(\quad_shift, {
 	var	fold     = Clip.kr(10*(In.kr(foldbus))+1,0.01,10);
 
 	// input and feedback signals
-	var input     = SoundIn.ar(inbus);
+	var input     = In.ar(inbus);
 
 	var pitch     = 500*(In.kr(pitchbus)+1);
 	var deviate   = [-0.5,-0.25,0.25,0.5]*abs(2*In.kr(devbus));
@@ -284,7 +284,7 @@ SynthDef(\channel_strip, {
 
 	var f = Lag.kr(freq,0.01);
 
-	var input_sig  = In.ar(in_chan);
+	var input_sig  = SoundIn.ar(in_chan);
 
 	var g   = autogain * gain;
 

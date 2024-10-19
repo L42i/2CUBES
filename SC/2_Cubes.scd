@@ -80,6 +80,10 @@ s.waitForBoot({
 	// these are used for the input signals AFTER strips
 	~input_BUS = Bus.audio(s, ~n_objects);
 
+
+
+
+
 	////////////////////////////////////////////////////////////////////////////////////////
 	// Control buses
 	////////////////////////////////////////////////////////////////////////////////////////
@@ -99,10 +103,68 @@ s.waitForBoot({
 	s.sync;
 
 
+	// this one is to be controlled manually:
+	~strip_gain_BUS        = Bus.control(s,~n_objects).setAll(1);
+	// this one is to be controlled by modulators:
+	~strip_autogain_BUS    = Bus.control(s,~n_objects).setAll(1);
+
+	// this one is to be controlled by modulators
+	~strip_lp_autocutoff_BUS  = Bus.control(s,~n_objects).setAll(1);
+	// this one is to be controlled manually:
+	~strip_lp_cutoff_BUS  = Bus.control(s,~n_objects).setAll(20000);
+	~strip_lp_reso_BUS    = Bus.control(s,~n_objects).setAll(1);
+
+	// this one is to be controlled by modulators
+	~strip_hp_autocutoff_BUS  = Bus.control(s,~n_objects).setAll(1);
+	// this one is to be controlled manually:
+	~strip_hp_cutoff_BUS      = Bus.control(s,~n_objects).setAll(1);
+	~strip_hp_reso_BUS        = Bus.control(s,~n_objects).setAll(1);
+
+
+	s.sync;
+
+
 	////////////////////////////////////////////////////////////////////////////////////////
-	// create encoders
+	// create input modules
 	////////////////////////////////////////////////////////////////////////////////////////
 
+	for (0, ~n_objects -1, {arg i;
+
+		post('Adding Channel Strip Module: ');
+		i.postln;
+
+		~channelstrips = ~channelstrips.add(
+			Synth(\channel_strip,
+				[
+					\in_chan,  i ,
+					\out_chan, ~input_BUS.index + i,
+				],
+				target: ~input_GROUP
+		);)
+	});
+
+	s.sync;
+
+	for (0, ~n_objects-1, {arg i;
+
+		post('Connecting and configuring channel strips: ');
+		i.postln;
+
+		~channelstrips[i].set(\in_chan,   i);
+		~channelstrips[i].map(\gain,	         ~strip_gain_BUS.index + i);
+		~channelstrips[i].map(\autogain,	     ~strip_autogain_BUS.index + i);
+		~channelstrips[i].map(\freq,             ~strip_lp_autocutoff_BUS.index + i);
+		~channelstrips[i].map(\lp_fixed_ratio,   ~strip_lp_cutoff_BUS.index+i);
+		~channelstrips[i].map(\rq,               ~strip_lp_reso_BUS.index +i);
+		~channelstrips[i].map(\hp_cutoff,        ~strip_hp_autocutoff_BUS.index + i);
+		~channelstrips[i].map(\hp_fixed,         ~strip_hp_cutoff_BUS.index + i);
+		~channelstrips[i].map(\hp_reso,          ~strip_hp_reso_BUS.index + i);
+
+	});
+
+	// Nebula comes to hvc
+	~channelstrips[6].set(\out_chan, ~input_BUS.index + 1);
+	~channelstrips[7].set(\out_chan, ~input_BUS.index + 2);
 
 
 	////////////////////////////////////////////////////////////////////////////////////////
@@ -162,33 +224,15 @@ s.waitForBoot({
 
 
 
-		// this one is to be controlled manually:
-/*	~strip_gain_BUS        = Bus.control(s,~nChannels);
-	// this one is to be controlled by modulators:
-	~strip_autogain_BUS    = Bus.control(s,~nChannels);
 
-	// this one is to be controlled by modulators
-	~strip_lp_autocutoff_BUS  = Bus.control(s,~nChannels);
-	// this one is to be controlled manually:
-	~strip_lp_cutoff_BUS  = Bus.control(s,~nChannels);
-	~strip_lp_reso_BUS    = Bus.control(s,~nChannels);
-
-	// this one is to be controlled by modulators
-	~strip_hp_autocutoff_BUS  = Bus.control(s,~nChannels);
-	// this one is to be controlled manually:
-	~strip_hp_cutoff_BUS      = Bus.control(s,~nChannels);
-	~strip_hp_reso_BUS        = Bus.control(s,~nChannels);
-
-
-	s.sync;
 
 
 	~strip_controller_A = StripController(0,
-	~strip_gain_BUS,
-	~strip_lp_cutoff_BUS,
-	~strip_lp_reso_BUS,
-	~strip_hp_cutoff_BUS,
-	~strip_hp_reso_BUS);*/
+		~strip_gain_BUS,
+		~strip_lp_cutoff_BUS,
+		~strip_lp_reso_BUS,
+		~strip_hp_cutoff_BUS,
+		~strip_hp_reso_BUS)
 
 
 });

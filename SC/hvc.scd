@@ -4,7 +4,7 @@
 
 ~hvc_1_synth = Synth(\quad_shift,[
 	// pdf buses
-	\inbus, 0,
+	\inbus, ~input_BUS.index + 0,
 	\outbus,   ~multi_BUS.index+0,
 	\gainbus,  ~quest_xyz_BUS[0].index+1,
 	\pitchbus, ~quest_xyz_BUS[0].index+0,
@@ -23,7 +23,7 @@
 
 ~hvc_2_synth = Synth(\quad_pdf,[
 	// pdf buses
-	\inbus, 1,
+	\inbus, ~input_BUS.index + 1,
 	\outbus,   ~multi_BUS.index+4,
 	\gainbus,     ~quest_xyz_BUS[1].index+1,
 	\pitchbus,    ~quest_xyz_BUS[1].index+0,
@@ -43,7 +43,7 @@
 
 ~hvc_3_synth = Synth(\quad_freezer,
 	[
-		\inbus, 2,
+		\inbus, ~input_BUS.index + 2,
 		\outbus,    ~multi_BUS.index+8,
 		\gainbus,   ~quest_xyz_BUS[2].index+1,
 		\threshbus, ~quest_xyz_BUS[2].index+1,

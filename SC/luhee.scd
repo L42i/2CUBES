@@ -5,7 +5,7 @@
 
 ~luhee_1_synth = Synth(\quad_shift,[
 	// pdf buses
-	\inbus, 4,
+	\inbus, ~input_BUS.index + 4,
 	\outbus, ~multi_BUS.index+16,
 	\gainbus,  ~quest_xyz_BUS[4].index+1,
 	\pitchbus, ~quest_xyz_BUS[4].index+0,
@@ -24,7 +24,7 @@
 
 ~luhee_2_synth = Synth(\quad_pdf,[
 	// pdf buses
-	\inbus, 4,
+	\inbus, ~input_BUS.index + 4,
 	\outbus,      ~multi_BUS.index+20,
 	\gainbus,     ~quest_xyz_BUS[5].index+1,
 	\pitchbus,    ~quest_xyz_BUS[5].index+0,
@@ -44,7 +44,7 @@
 
 ~luhee_3_synth = Synth(\quad_freezer,
 	[
-		\inbus, 4,
+		\inbus, ~input_BUS.index + 4,
 		\outbus, ~multi_BUS.index+24,
 		\gainbus,   ~quest_xyz_BUS[6].index+1,
 		\threshbus, ~quest_xyz_BUS[6].index+1,
@@ -65,7 +65,7 @@
 //
 
 ~bass_grainer  = Synth(\quad_input_grainer,[
-	\inbus, 5,
+	\inbus, ~input_BUS.index + 5,
 	\outbus,      ~multi_BUS.index+28,
 	\densitybus,  ~quest_xyz_BUS[7].index+2,
 	\durbus,      ~quest_xyz_BUS[7].index+0,
