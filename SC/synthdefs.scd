@@ -40,7 +40,8 @@ SynthDef(\quad_grainer,
 	{
 		|
 		outbus,
-		buffer,
+		buffer1,
+		buffer2,
 		centerbus    = 0,
 		crushbus     = 1,
 		densitybus   = 1,
@@ -49,21 +50,29 @@ SynthDef(\quad_grainer,
 		gainbus
 		|
 
-		var triggers, c;
+		var triggers1, triggers2, c1, c2, g1, g2;
 
-		var	outgain  = Clip.kr(4*pow((In.kr(gainbus)+1),1),0,2);
+		var	outgain  = Clip.kr(pow((In.kr(gainbus)+1),2),0,2);
 		var center   = Clip.kr((In.kr(centerbus)+1)*0.5,0,1);
-		var density  = Clip.kr(100*(In.kr(densitybus)+1),0,100);
-		var dur      = Clip.kr(0.5-(1*abs(In.kr(durbus))),0.0001,1);
+
+		var density1  = 10*pow(Clip.kr((In.kr(densitybus)+1),0,1),4);
+		var density2  = 10-density1;
+
+		var dur      = Clip.kr(0.5-(0.5*abs(In.kr(durbus))),0.0001,1);
 		var crush    = Clip.kr(round((24*pow(-1*In.kr(crushbus)+1,1))),1,24);
 
 		var crushgain = 2*(pow(crush,1.2)/24);
 
-		triggers    = Trig.kr(WhiteNoise.kr([1,1,1,1]),0.01);
+		triggers1  = Dust.kr([density1,density1,density1,density1]);
+		c1         = center + TRand.kr(0,0.1,triggers1) * BufDur.kr(buffer1);
+		g1  = Dust.kr([1,1,1,1],0.5,0.5);
 
-		c =   center + TRand.kr(0,0.1,triggers) * BufDur.kr(buffer);
+		triggers2  =  Dust.kr([density2,density2,density2, density2]);
+		c2         = center + TRand.kr(0,0.1,triggers2) * BufDur.kr(buffer2);
+		g2  = Dust.kr([1,1,1,1],0.5,0.5);
 
-		Out.ar(outbus,   outgain * crushgain* Decimator.ar(TGrains.ar(1, triggers, buffer, pitch, c, dur), s.sampleRate, crush););
+		Out.ar(outbus,   g1*outgain * crushgain* Decimator.ar(TGrains.ar(1, triggers1, buffer1, pitch, c1, dur), s.sampleRate, crush););
+		Out.ar(outbus,   g2*outgain * crushgain* Decimator.ar(TGrains.ar(1, triggers2, buffer2, pitch, c2, dur), s.sampleRate, crush););
 
 }).add;
 
@@ -105,14 +114,15 @@ SynthDef(\quad_freezer, {
 	gainbus,
 	threshbus,
 	crushbus,
-	lpbus
+	lpbus,
+	rqbus
 	|
 
-	var thresholds = [0.44,0.48,0.52,0.56];
+	var thresholds = [0.01,0.02,0.03,0.04];
 
 	// input signal
 	var input     = In.ar(inbus);
-	var	outgain   = Clip.kr(2*pow(In.kr(gainbus)+1,1),0,2.5);
+	var	outgain   = Clip.kr(pow(In.kr(gainbus)+1,1)*2,0,2.5);
 
 	// do an FFT to all the signals
 	var fft = FFT(LocalBuf(2048.dup(4), 1), input);
@@ -125,9 +135,10 @@ SynthDef(\quad_freezer, {
 
 	var bad = Decimator.ar(td,s.sampleRate,crush);
 
-	var cutoff = Lag.kr(Clip.kr(20000 - (15000 * abs(In.kr(lpbus))) ,10,20000),0.05);
+	var cutoff = Clip.kr(Lag.kr(20000 - (20000 * pow(abs(In.kr(lpbus)),0.2)), 0.05) ,10,20000);
+	var rq     = Clip.kr(Lag.kr(3 - (2*abs(In.kr(rqbus))) ,0.1), 1.0, 3.0);
 
-	var out = LPF.ar(bad, cutoff);
+	var out = RLPF.ar(bad, cutoff, 1);
 
 	Out.ar(outbus,out*crushgain*outgain);
 
@@ -157,11 +168,12 @@ SynthDef(\quad_pdf, {
 	// feedback-delay parameters:
 	var times = max(0.001,   Lag.kr(0.0+(0.5*[1,1.25,1.5,1.85] * maindelay),0.1));
 
-	var gain  = max(0.00001, min(1.1, abs(In.kr(feedbackbus))));
+	var gain  = max(0.0, min(0.99, abs(In.kr(feedbackbus))));
 
 	var out   = DelayC.ar(input + proc, 1, times);
 
 	LocalOut.ar(out*gain);
+
 	Out.ar(outbus,outgain*out);
 }).add;
 

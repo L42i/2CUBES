@@ -52,7 +52,9 @@ s.waitForBoot({
 
 
 
-	~bird_buffer = Buffer.read(s,"/home/anwaldt/SOUND/2CUBES/WAV/rainbirds.wav");
+	~bird_buffer  = Buffer.read(s,"/home/anwaldt/SOUND/2CUBES/WAV/rainbirds.wav");
+	~truck_buffer = Buffer.read(s,"/home/anwaldt/SOUND/2CUBES/WAV/harmony_tractor.wav");
+	~bigfoot_buffer = Buffer.read(s,"/home/anwaldt/SOUND/2CUBES/WAV/bigfoot.wav");
 
 	////////////////////////////////////////////////////////////////////////////////////////
 	// GROUPS
@@ -193,8 +195,8 @@ s.waitForBoot({
 	//
 	////////////////////////////////////////////////////////////////////////////////////////
 
-	// load(thisProcess.nowExecutingPath.dirname++"/hvc.scd");
-	// load(thisProcess.nowExecutingPath.dirname++"/luhee.scd");
+	load(thisProcess.nowExecutingPath.dirname++"/hvc.scd");
+	load(thisProcess.nowExecutingPath.dirname++"/luhee.scd");
 
 	////////////////////////////////////////////////////////////////////////////////////////
 	// The output node

@@ -49,7 +49,8 @@
 		\gainbus,   ~quest_xyz_BUS[6].index+1,
 		\threshbus, ~quest_xyz_BUS[6].index+1,
 		\crushbus,  ~quest_xyz_BUS[6].index+0,
-		\lpbus,     ~quest_xyz_BUS[6].index+2
+		\lpbus,     ~quest_xyz_BUS[6].index+2,
+		\rqbus,     ~quest_xyz_BUS[6].index+2
 	],
 	~effects_GROUP);
 

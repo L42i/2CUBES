@@ -48,7 +48,8 @@
 		\gainbus,   ~quest_xyz_BUS[2].index+1,
 		\threshbus, ~quest_xyz_BUS[2].index+1,
 		\crushbus,  ~quest_xyz_BUS[2].index+0,
-		\lpbus,     ~quest_xyz_BUS[2].index+2
+		\lpbus,     ~quest_xyz_BUS[2].index+2,
+		\rqbus,     ~quest_xyz_BUS[2].index+2
 	],
 	~effects_GROUP);
 
@@ -61,16 +62,16 @@
 
 
 ////////////////////////////////////////////////////////////////////////////////////////
-//
 
 ~bird_grainer  = Synth(\quad_grainer,[
-	\buffer, ~bird_buffer,
+	\buffer2, ~bird_buffer,
+	\buffer1, ~truck_buffer,
 	\outbus, ~multi_BUS.index+12,
+	\gainbus,    ~quest_xyz_BUS[3].index+1,
 	\centerbus,  ~quest_xyz_BUS[3].index,
 	\densitybus, ~quest_xyz_BUS[3].index+2,
 	\durbus,     ~quest_pry_BUS[3].index+1,
-	\crushbus,   ~quest_pry_BUS[3].index+2,
-	\gainbus,    ~quest_xyz_BUS[3].index+1
+	\crushbus,   ~quest_pry_BUS[3].index+2
 ],~effects_GROUP);
 
 ~bird_grainer_splitter = Synth(\aed_splitter,
@@ -80,6 +81,9 @@
 		\outbus_3, ~aed_BUS[14],
 		\outbus_4, ~aed_BUS[15]
 ],~effects_GROUP);
+
+////////////////////////////////////////////////////////////////////////////////////////
+//
 
 
 
