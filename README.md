@@ -1,10 +1,13 @@
 # 2CUBES
 
-    $ adb devices
 
 
+## Streaming
 
 
+### Install PD Stuff
+
+    gem
 
 
 
@@ -31,6 +34,20 @@ Or: add the line to /etc/modules.
 
     $ scrcpy -s 2G0YC1ZG2P08CV --v4l2-sink=/dev/video10 -N
 
+
+### Authorize Devices
+
+Run:
+
+    adb devices
+
+
+A newly connected device will show:
+
+
+
+    list of devices attached
+    2G0YC1ZG2P08CV  unauthorized
 
 
 

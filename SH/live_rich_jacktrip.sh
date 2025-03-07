@@ -1,7 +1,7 @@
 INTERFACE=EVO16
 
 
-sudo ~/Desktop/cpu-set-all.sh -g performance
+# sudo ~/Desktop/cpu-set-all.sh -g performance
 
 
 tmux new-session -d -s 2CUBES
