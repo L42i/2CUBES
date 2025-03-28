@@ -1,4 +1,4 @@
-#N canvas 1171 381 2790 1798 12;
+#N canvas 0 56 1920 958 12;
 #X declare -lib Gem;
 #X text 36 58 GEM object;
 #X obj 25 106 cnv 15 100 60 empty empty empty 20 12 0 14 #bcbcbc #404040 0;
@@ -58,7 +58,7 @@
 #X connect 16 0 3 0;
 #X coords 0 -1 1 1 333 111 1 100 100;
 #X restore 1814 326 pd xshift;
-#N canvas 1430 911 1065 941 yshift 0;
+#N canvas 492 272 1065 941 yshift 0;
 #X obj 119 26 inlet;
 #X obj 113 366 outlet;
 #X obj 113 275 translate;
@@ -75,7 +75,7 @@
 #X msg 411 67 0;
 #X obj 412 -7 t b b b;
 #X obj 421 -103 loadbang;
-#X msg 201 69 -1.5;
+#X msg 201 69 -2;
 #X connect 0 0 2 0;
 #X connect 2 0 1 0;
 #X connect 3 0 2 1;
@@ -104,7 +104,7 @@
 #X obj 568 71 gemhead;
 #X obj 576 248 pix_video;
 #X obj 594 141 loadbang;
-#N canvas 1035 819 815 568 xshift 0;
+#N canvas 1035 446 815 568 xshift 0;
 #X obj 119 26 inlet;
 #X obj 113 366 outlet;
 #X obj 113 275 translate;
@@ -121,7 +121,7 @@
 #X msg 287 67 1;
 #X msg 349 70 0;
 #X msg 411 67 0;
-#X msg 201 69 -1.5;
+#X msg 201 69 -4;
 #X connect 0 0 2 0;
 #X connect 2 0 1 0;
 #X connect 3 0 2 1;
@@ -146,7 +146,7 @@
 #X connect 16 0 3 0;
 #X coords 0 -1 1 1 333 111 1 100 100;
 #X restore 553 323 pd xshift;
-#N canvas 1430 911 1065 941 yshift 0;
+#N canvas 1920 73 1065 941 yshift 0;
 #X obj 119 26 inlet;
 #X obj 113 366 outlet;
 #X obj 113 275 translate;
@@ -163,7 +163,7 @@
 #X msg 411 67 0;
 #X obj 412 -7 t b b b;
 #X obj 421 -103 loadbang;
-#X msg 202 69 1.5;
+#X msg 202 69 0;
 #X connect 0 0 2 0;
 #X connect 2 0 1 0;
 #X connect 3 0 2 1;
@@ -280,7 +280,7 @@
 #X obj 2194 73 gemhead;
 #X obj 2202 250 pix_video;
 #X obj 2220 143 loadbang;
-#N canvas 1035 819 815 568 xshift 0;
+#N canvas 1035 446 815 568 xshift 0;
 #X obj 119 26 inlet;
 #X obj 113 366 outlet;
 #X obj 113 275 translate;
@@ -297,7 +297,7 @@
 #X msg 287 67 1;
 #X msg 349 70 0;
 #X msg 411 67 0;
-#X msg 201 69 1.5;
+#X msg 201 69 4;
 #X connect 0 0 2 0;
 #X connect 2 0 1 0;
 #X connect 3 0 2 1;
@@ -322,7 +322,7 @@
 #X connect 16 0 3 0;
 #X coords 0 -1 1 1 333 111 1 100 100;
 #X restore 2179 325 pd xshift;
-#N canvas 1430 911 1065 941 yshift 0;
+#N canvas 1920 73 1065 941 yshift 0;
 #X obj 119 26 inlet;
 #X obj 113 366 outlet;
 #X obj 113 275 translate;
@@ -339,7 +339,7 @@
 #X msg 411 67 0;
 #X obj 412 -7 t b b b;
 #X obj 421 -103 loadbang;
-#X msg 201 69 -1.5;
+#X msg 201 69 0;
 #X connect 0 0 2 0;
 #X connect 2 0 1 0;
 #X connect 3 0 2 1;
@@ -443,13 +443,13 @@
 #X connect 7 1 4 0;
 #X coords 0 -1 1 1 333 111 1 100 100;
 #X restore 1814 1021 pd rotate;
-#N canvas 546 608 815 568 scale 0;
+#N canvas 546 446 815 568 scale 0;
 #X obj 37 39 inlet;
 #X obj 37 379 outlet;
 #X floatatom 252 145 5 0 0 0 - - - 0;
 #X obj 37 288 scale;
 #X obj 256 31 loadbang;
-#X msg 256 64 0.45;
+#X msg 256 64 0.6;
 #X connect 0 0 3 0;
 #X connect 2 0 3 1;
 #X connect 3 0 1 0;
@@ -506,13 +506,13 @@
 #X connect 7 1 4 0;
 #X coords 0 -1 1 1 333 111 1 100 100;
 #X restore 553 1018 pd rotate;
-#N canvas 546 608 815 568 scale 0;
+#N canvas 546 446 815 568 scale 0;
 #X obj 37 39 inlet;
 #X obj 37 379 outlet;
 #X floatatom 252 145 5 0 0 0 - - - 0;
 #X obj 37 288 scale;
 #X obj 256 31 loadbang;
-#X msg 256 64 0.45;
+#X msg 256 64 1.2;
 #X connect 0 0 3 0;
 #X connect 2 0 3 1;
 #X connect 3 0 1 0;
@@ -540,13 +540,13 @@
 #X connect 7 0 2 0;
 #X coords 0 -1 1 1 333 111 1 100 100;
 #X restore 948 1021 pd rotate;
-#N canvas 546 608 815 568 scale 0;
+#N canvas 546 446 815 568 scale 0;
 #X obj 37 39 inlet;
 #X obj 37 379 outlet;
 #X floatatom 252 145 5 0 0 0 - - - 0;
 #X obj 37 288 scale;
 #X obj 256 31 loadbang;
-#X msg 256 64 0.45;
+#X msg 256 64 0.6;
 #X connect 0 0 3 0;
 #X connect 2 0 3 1;
 #X connect 3 0 1 0;
@@ -603,13 +603,13 @@
 #X connect 7 0 2 0;
 #X coords 0 -1 1 1 333 111 1 100 100;
 #X restore 2179 1020 pd rotate;
-#N canvas 546 608 815 568 scale 0;
+#N canvas 546 446 815 568 scale 0;
 #X obj 37 39 inlet;
 #X obj 37 379 outlet;
 #X floatatom 252 145 5 0 0 0 - - - 0;
 #X obj 37 288 scale;
 #X obj 256 31 loadbang;
-#X msg 256 64 0.45;
+#X msg 256 64 1.2;
 #X connect 0 0 3 0;
 #X connect 2 0 3 1;
 #X connect 3 0 1 0;
@@ -617,7 +617,7 @@
 #X connect 5 0 2 0;
 #X coords 0 -1 1 1 333 111 1 100 100;
 #X restore 2179 872 pd scale;
-#N canvas 1430 911 1065 941 zshift 0;
+#N canvas 1920 73 1065 941 zshift 0;
 #X obj 119 26 inlet;
 #X obj 113 366 outlet;
 #X obj 113 275 translate;
@@ -785,7 +785,7 @@
 #X connect 16 0 3 0;
 #X coords 0 -1 1 1 333 111 1 100 100;
 #X restore 2179 607 pd zshift;
-#X connect 4 0 5 0;
+#X obj 212 28 loadbang;
 #X connect 5 0 7 0;
 #X connect 6 0 9 0;
 #X connect 7 0 8 0;
@@ -797,7 +797,6 @@
 #X connect 13 0 14 0;
 #X connect 14 0 44 0;
 #X connect 15 0 11 0;
-#X connect 16 0 17 0;
 #X connect 17 0 19 0;
 #X connect 18 0 21 0;
 #X connect 19 0 20 0;
@@ -825,3 +824,4 @@
 #X connect 45 0 39 0;
 #X connect 46 0 32 0;
 #X connect 47 0 43 0;
+#X connect 48 0 3 1;

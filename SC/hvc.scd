@@ -64,8 +64,8 @@
 ////////////////////////////////////////////////////////////////////////////////////////
 
 ~bird_grainer  = Synth(\quad_grainer,[
-	\buffer2, ~bird_buffer,
-	\buffer1, ~truck_buffer,
+	\buffer2, ~duck_buffer,
+	\buffer1, ~bigfoot_buffer,
 	\outbus, ~multi_BUS.index+12,
 	\gainbus,    ~quest_xyz_BUS[3].index+1,
 	\centerbus,  ~quest_xyz_BUS[3].index,
@@ -92,11 +92,12 @@
 
 ~dark_energy = {
 
-	arg	outgain = 1.4; //max(0, pow(0.5*(In.kr(~quest_xyz_BUS[3])+1),1));
+	arg	outgain = 1.2; //max(0, pow(0.5*(In.kr(~quest_xyz_BUS[3])+1),1));
 	var in      = SoundIn.ar([3]);
 	Out.ar(~multi_BUS.index+12, [in,in,in,in]*outgain);
 
 }.play(~effects_GROUP);
+
 
 
 

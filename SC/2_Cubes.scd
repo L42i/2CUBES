@@ -52,9 +52,12 @@ s.waitForBoot({
 
 
 
-	~bird_buffer  = Buffer.read(s,"/home/anwaldt/SOUND/2CUBES/WAV/rainbirds.wav");
-	~truck_buffer = Buffer.read(s,"/home/anwaldt/SOUND/2CUBES/WAV/harmony_tractor.wav");
-	~bigfoot_buffer = Buffer.read(s,"/home/anwaldt/SOUND/2CUBES/WAV/bigfoot.wav");
+	//~bird_buffer  = Buffer.read(s,"/home/anwaldt/SOUND/2CUBES/WAV/rainbirds.wav");
+	//~truck_buffer = Buffer.read(s,"/home/anwaldt/SOUND/2CUBES/WAV/harmony_tractor.wav");
+	//~bigfoot_buffer = Buffer.read(s,"/home/anwaldt/SOUND/2CUBES/WAV/bigfoot.wav");
+
+	 ~bigfoot_buffer  = Buffer.read(s,"/home/anwaldt/Desktop/powell_street.wav");
+	~duck_buffer= Buffer.read(s,"/home/anwaldt/Desktop/krog_street_tunnel.wav");
 
 	////////////////////////////////////////////////////////////////////////////////////////
 	// GROUPS
@@ -92,9 +95,9 @@ s.waitForBoot({
 
 	// the control rate buses for the input from the Meta Quest
 	for (0, ~n_objects -1, {arg i;
-		~quest_aed_BUS = ~quest_aed_BUS.add(Bus.control(s,3));
-		~quest_xyz_BUS = ~quest_xyz_BUS.add(Bus.control(s,3));
-		~quest_pry_BUS = ~quest_pry_BUS.add(Bus.control(s,3));
+		~quest_aed_BUS = ~quest_aed_BUS.add(Bus.control(s,3).setAll(0));
+		~quest_xyz_BUS = ~quest_xyz_BUS.add(Bus.control(s,3).setAll(0));
+		~quest_pry_BUS = ~quest_pry_BUS.add(Bus.control(s,3).setAll(0));
 	});
 
 	// the aed_BUSes are mapped to the positions of the Ambi sources
@@ -164,9 +167,16 @@ s.waitForBoot({
 
 	});
 
+
+	s.sync;
+
+	~strip_hp_cutoff_BUS.setAt(4,80)
+	~strip_hp_cutoff_BUS.setAt(5,80)
+
+
 	// Nebula comes to hvc
-	~channelstrips[6].set(\out_chan, ~input_BUS.index + 1);
-	~channelstrips[7].set(\out_chan, ~input_BUS.index + 2);
+	//~channelstrips[6].set(\out_chan, ~input_BUS.index + 1);
+	//~channelstrips[7].set(\out_chan, ~input_BUS.index + 2);
 
 
 	////////////////////////////////////////////////////////////////////////////////////////
@@ -207,7 +217,10 @@ s.waitForBoot({
 
 	// goes into the output group
 	~hoa_output.moveToTail(~output_GROUP);
-	~hoa_output.set(\gain,0.75);
+	~hoa_output.set(\gain,0.2);
+
+	~dark_energy.set(\outgain,1.0)
+
 
 	////////////////////////////////////////////////////////////////////////////////////////
 	// OSC

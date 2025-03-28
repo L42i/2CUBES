@@ -58,7 +58,7 @@ SynthDef(\quad_grainer,
 		var density1  = 10*pow(Clip.kr((In.kr(densitybus)+1),0,1),4);
 		var density2  = 10-density1;
 
-		var dur      = Clip.kr(0.5-(0.5*abs(In.kr(durbus))),0.0001,1);
+		var dur      = Clip.kr(0.3 * pow(In.kr(durbus),2), 0.0001, 1);
 		var crush    = Clip.kr(round((24*pow(-1*In.kr(crushbus)+1,1))),1,24);
 
 		var crushgain = 2*(pow(crush,1.2)/24);
@@ -88,7 +88,7 @@ SynthDef(\quad_filter, {
 
 	// input signal
 	var input     = In.ar(inbus);
-	var	outgain   = Clip.kr(1*(In.kr(gainbus)+1),0,2);
+	var	outgain   = Lag.kr(Clip.kr(1*(In.kr(gainbus)+1),0,2),0.1);
 
 	// filter all the signals
 	var filter1   = LPF.ar(input, 200.0,outgain);
@@ -122,7 +122,7 @@ SynthDef(\quad_freezer, {
 
 	// input signal
 	var input     = In.ar(inbus);
-	var	outgain   = Clip.kr(pow(In.kr(gainbus)+1,1)*2,0,2.5);
+	var	outgain   = Lag.kr(Clip.kr(pow(In.kr(gainbus)+1,1)*2,0,2.5),0.1);
 
 	// do an FFT to all the signals
 	var fft = FFT(LocalBuf(2048.dup(4), 1), input);
@@ -155,7 +155,7 @@ SynthDef(\quad_pdf, {
 	feedbackbus
 	|
 
-	var	outgain  = Clip.kr(0.5*(In.kr(gainbus)+1),0,2);
+	var	outgain  = Lag.kr(Clip.kr(0.5*(In.kr(gainbus)+1),0,2),0.1);
 
 	// input and feedback signals
 	var input    = In.ar(inbus);
@@ -190,7 +190,7 @@ SynthDef(\quad_shift, {
 	foldbus
 	|
 
-	var	outgain  = Clip.kr(0.5*(In.kr(gainbus)+1),0,1.5);
+	var	outgain  = Lag.kr(Clip.kr(0.5*(In.kr(gainbus)+1),0,1.5), 0.1);
 	var	fold     = Clip.kr(10*(In.kr(foldbus))+1,0.01,10);
 
 	// input and feedback signals

@@ -8,4 +8,8 @@ tmux split-window -h -t QUEST
 
 tmux send-keys -t QUEST 'scrcpy -s 2G0YC1ZF870S25 --v4l2-sink=/dev/video11 --bit-rate 20M --max-fps=30 -N' C-m
 
+tmux split-window -h -t QUEST
+
+tmux send-keys -t QUEST 'pd ../PD/quest_streamer.pd' C-m
+
 tmux attach-session -t QUEST
