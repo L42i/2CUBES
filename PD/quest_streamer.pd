@@ -1,4 +1,4 @@
-#N canvas 0 56 1920 958 12;
+#N canvas 522 80 1280 654 12;
 #X declare -lib Gem;
 #X text 36 58 GEM object;
 #X obj 25 106 cnv 15 100 60 empty empty empty 20 12 0 14 #bcbcbc #404040 0;
@@ -121,7 +121,7 @@
 #X msg 287 67 1;
 #X msg 349 70 0;
 #X msg 411 67 0;
-#X msg 201 69 -4;
+#X msg 201 69 -3;
 #X connect 0 0 2 0;
 #X connect 2 0 1 0;
 #X connect 3 0 2 1;
@@ -297,7 +297,7 @@
 #X msg 287 67 1;
 #X msg 349 70 0;
 #X msg 411 67 0;
-#X msg 201 69 4;
+#X msg 201 69 2.5;
 #X connect 0 0 2 0;
 #X connect 2 0 1 0;
 #X connect 3 0 2 1;
@@ -512,7 +512,7 @@
 #X floatatom 252 145 5 0 0 0 - - - 0;
 #X obj 37 288 scale;
 #X obj 256 31 loadbang;
-#X msg 256 64 1.2;
+#X msg 256 64 0.9;
 #X connect 0 0 3 0;
 #X connect 2 0 3 1;
 #X connect 3 0 1 0;
@@ -609,7 +609,7 @@
 #X floatatom 252 145 5 0 0 0 - - - 0;
 #X obj 37 288 scale;
 #X obj 256 31 loadbang;
-#X msg 256 64 1.2;
+#X msg 256 64 0.9;
 #X connect 0 0 3 0;
 #X connect 2 0 3 1;
 #X connect 3 0 1 0;

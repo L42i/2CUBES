@@ -170,8 +170,8 @@ s.waitForBoot({
 
 	s.sync;
 
-	~strip_hp_cutoff_BUS.setAt(4,80)
-	~strip_hp_cutoff_BUS.setAt(5,80)
+	~strip_hp_cutoff_BUS.setAt(4,80);
+	~strip_hp_cutoff_BUS.setAt(5,80);
 
 
 	// Nebula comes to hvc
@@ -219,7 +219,7 @@ s.waitForBoot({
 	~hoa_output.moveToTail(~output_GROUP);
 	~hoa_output.set(\gain,0.2);
 
-	~dark_energy.set(\outgain,1.0)
+	~dark_energy.set(\outgain,1.0);
 
 
 	////////////////////////////////////////////////////////////////////////////////////////
