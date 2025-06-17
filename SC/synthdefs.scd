@@ -19,14 +19,14 @@ SynthDef(\quad_input_grainer,
 		var density  = Clip.kr(1-abs(In.kr(densitybus)),0,1);
 		var dur      = Clip.kr(In.kr(durbus)+1*0.1,0.0001,1);
 
-		var freq     = Clip.kr(Lag.kr(20000 * (In.kr(cutoffbus)),0.1),10,12000);
+		var freq     = Clip.kr(Lag.kr(20000 * (In.kr(cutoffbus)),0.5),10,12000);
 		var rq       = Clip.kr(Lag.kr(In.kr(rqbus)*2,0.1),1,2);
 
 		var feedback = LocalIn.ar(4);
 
 		triggers     = Trig1.kr(WhiteNoise.kr([1,-1,1,-1])+[density,density,density,density],dur);
 
-		grainer      = RHPF.ar(GrainIn.ar(1, triggers, dur, In.ar(inbus)),freq,rq);
+		grainer      = RHPF.ar(GrainIn.ar(1, triggers, dur, In.ar(inbus)),freq,0.5);
 
 		grainer      = DelayC.ar(grainer+feedback,2,[0.15 , 0.173 , 0.1612 , 0.1752]);
 
@@ -227,7 +227,9 @@ SynthDef(\hoa_mono_encoder,
 
 		var saturate = 2.0;
 		var level =  (saturate/(dist+saturate));
-		var bform = HOASphericalHarmonics.coefN3D(~hoa_order, azim, elev) * sound * level;
+		// var bform = HOASphericalHarmonics.coefN3D(~hoa_order, azim, elev) * sound * level;
+
+		var bform = HoaEncodeDirection.ar(sound*level,azim, elev, 3, ~hoa_order);
 
 		Out.ar(out_bus, bform);
 

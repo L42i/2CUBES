@@ -15,7 +15,7 @@
 ~n_sources      = 32;
 
 // the HOA order determines the size of the HOA bus and the nr of outputs
-~hoa_order      = 5;
+~hoa_order      = 4;
 ~n_hoa_channels = (pow(~hoa_order + 1.0 ,2.0)).asInteger;
 
 ////////////////////////////////////////////////////////////////////////////////////////
@@ -24,7 +24,7 @@
 
 s.options.device               = "2CUBES";
 s.options.numInputBusChannels  = ~n_inputs;
-s.options.numOutputBusChannels = ~n_hoa_channels;
+s.options.numOutputBusChannels = 32;//~n_hoa_channels;
 s.options.memSize              = 65536;
 s.options.numBuffers           = 4096;
 
@@ -56,8 +56,8 @@ s.waitForBoot({
 	//~truck_buffer = Buffer.read(s,"/home/anwaldt/SOUND/2CUBES/WAV/harmony_tractor.wav");
 	//~bigfoot_buffer = Buffer.read(s,"/home/anwaldt/SOUND/2CUBES/WAV/bigfoot.wav");
 
-	 ~bigfoot_buffer  = Buffer.read(s,"/home/anwaldt/Desktop/powell_street.wav");
-	~duck_buffer= Buffer.read(s,"/home/anwaldt/Desktop/krog_street_tunnel.wav");
+	 ~bigfoot_buffer  = Buffer.read(s,"/home/anwaldt/Desktop/birds.wav");
+	~duck_buffer= Buffer.read(s,"/home/anwaldt/Desktop/rainbirds.wav");
 
 	////////////////////////////////////////////////////////////////////////////////////////
 	// GROUPS
@@ -96,7 +96,7 @@ s.waitForBoot({
 	// the control rate buses for the input from the Meta Quest
 	for (0, ~n_objects -1, {arg i;
 		~quest_aed_BUS = ~quest_aed_BUS.add(Bus.control(s,3).setAll(0));
-		~quest_xyz_BUS = ~quest_xyz_BUS.add(Bus.control(s,3).setAll(0));
+		~quest_xyz_BUS = ~quest_xyz_BUS.add(Bus.control(s,3).setAll(-1));
 		~quest_pry_BUS = ~quest_pry_BUS.add(Bus.control(s,3).setAll(0));
 	});
 
@@ -217,9 +217,9 @@ s.waitForBoot({
 
 	// goes into the output group
 	~hoa_output.moveToTail(~output_GROUP);
-	~hoa_output.set(\gain,0.2);
+	~hoa_output.set(\gain,0.3);
 
-	~dark_energy.set(\outgain,1.0);
+	~dark_energy.set(\outgain,2);
 
 
 	////////////////////////////////////////////////////////////////////////////////////////
@@ -239,7 +239,7 @@ s.waitForBoot({
 
 
 
-
+/*
 
 
 	~strip_controller_A = StripController(0,
@@ -247,7 +247,7 @@ s.waitForBoot({
 		~strip_lp_cutoff_BUS,
 		~strip_lp_reso_BUS,
 		~strip_hp_cutoff_BUS,
-		~strip_hp_reso_BUS)
+		~strip_hp_reso_BUS)*/
 
 
 });

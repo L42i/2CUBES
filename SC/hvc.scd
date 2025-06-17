@@ -75,7 +75,7 @@
 ],~effects_GROUP);
 
 ~bird_grainer_splitter = Synth(\aed_splitter,
-	[\inbus,    ~quest_aed_BUS[2],
+	[\inbus,    ~quest_aed_BUS[3],
 		\outbus_1, ~aed_BUS[12],
 		\outbus_2, ~aed_BUS[13],
 		\outbus_3, ~aed_BUS[14],
@@ -94,7 +94,7 @@
 
 	arg	outgain = 1.2; //max(0, pow(0.5*(In.kr(~quest_xyz_BUS[3])+1),1));
 	var in      = SoundIn.ar([3]);
-	Out.ar(~multi_BUS.index+12, [in,in,in,in]*outgain);
+	Out.ar(~ambi_BUS.index,in *outgain);
 
 }.play(~effects_GROUP);
 
