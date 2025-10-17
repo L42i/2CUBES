@@ -1,5 +1,5 @@
 INTERFACE=EVO16
-
+# #U2A
 
 sudo ~/Desktop/cpu-set-all.sh -g performance
 

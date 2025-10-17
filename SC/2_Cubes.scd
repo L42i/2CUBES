@@ -56,8 +56,10 @@ s.waitForBoot({
 	//~truck_buffer = Buffer.read(s,"/home/anwaldt/SOUND/2CUBES/WAV/harmony_tractor.wav");
 	//~bigfoot_buffer = Buffer.read(s,"/home/anwaldt/SOUND/2CUBES/WAV/bigfoot.wav");
 
-	 ~bigfoot_buffer  = Buffer.read(s,"/home/anwaldt/Desktop/birds.wav");
-	~duck_buffer= Buffer.read(s,"/home/anwaldt/Desktop/rainbirds.wav");
+
+
+	 ~bigfoot_buffer  = Buffer.read(s,"/home/anwaldt/Desktop/birds2trains.wav");
+	~duck_buffer= Buffer.read(s,"/home/anwaldt/Desktop/noise2people.wav");
 
 	////////////////////////////////////////////////////////////////////////////////////////
 	// GROUPS
@@ -217,7 +219,7 @@ s.waitForBoot({
 
 	// goes into the output group
 	~hoa_output.moveToTail(~output_GROUP);
-	~hoa_output.set(\gain,0.3);
+	~hoa_output.set(\gain,0.5);
 
 	~dark_energy.set(\outgain,2);
 

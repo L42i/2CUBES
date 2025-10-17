@@ -56,3 +56,14 @@ A newly connected device will show:
 https://github.com/umlaeute/Gem
 
 
+
+
+# SCRCPY over WiFi
+
+    $ adb shell ip route
+
+    $ adb tcpip 5555
+
+    $ adb connect 10.10.10.102:5555
+
+    $ scrcpy -e --video-source=camera --camera-id=50 --video-bit-rate 10M --max-fps=20 --v4l2-sink=/dev/video10 -N --no-window --no-audio

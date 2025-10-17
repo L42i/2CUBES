@@ -6,7 +6,7 @@ INTERFACE=EVO16
 
 tmux new-session -d -s 2CUBES
 
-tmux send-keys -t 2CUBES 'jackd -P 95 -a a -d alsa -d hw:'$INTERFACE' -p -r 48000 -p 256 -n 2' C-m
+#tmux send-keys -t 2CUBES 'jackd -P 95 -a a -d alsa -d hw:'$INTERFACE' -p -r 48000 -p 256 -n 2' C-m
 
 sleep 3
 
